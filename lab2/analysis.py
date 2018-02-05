@@ -39,8 +39,8 @@ b_cal_length = 10.00 / 1000
 
 # magnet masses from calibration with and without the current turned on
 # you can apply the error with a lambda function or uarray (see a few lines down)
-b_cal_scale_no_current = df['scale_no_mag_si'].dropna().apply(lambda x: ufloat(x, .001))
-b_cal_scale_with_current = df['scale_with_mag_si'].dropna().apply(lambda x: ufloat(x, .001))
+b_cal_scale_no_current = df['scale_no_mag_si'].dropna().apply(lambda x: ufloat(x, .00001))
+b_cal_scale_with_current = df['scale_with_mag_si'].dropna().apply(lambda x: ufloat(x, .00001))
 
 
 
@@ -120,6 +120,16 @@ lit_xm = df['lit_xm']
 area = \
         df['area_param_1'].apply(lambda x: ufloat(x, .0001)) * \
         df['area_param_2'].apply(lambda x: ufloat(x, .0001))
+
+
+'''
+the area uncertainty for cobalt is very close to zero, and we are given the
+dimesions of the cobalt wire - so I will assume that the dimensions we are
+given are exact. Without this assumption, it's really easy to hit an error bar
+of 80,000
+'''
+area[4] = area[4].n
+
 height = df['height_sample'].apply(lambda x: ufloat(x, .0001)) 
 real_mass = df['sample_mass_si'].apply(lambda x: ufloat(x, .000001)) 
 volume = area * height
@@ -146,7 +156,6 @@ def xm(mass_difference, area):
 sample_xm = xm(sample_mass_difference, area)
 sample_xm_values = sample_xm.apply(lambda x: x.n)
 sample_xm_err = sample_xm.apply(lambda x: x.s)
-
 
 ################################
 # PLOTTING DATA
@@ -198,3 +207,4 @@ plt.bar(name[[4]], sample_xm_values[[4]], yerr=sample_xm_err[[4]], label='Data')
 plt.bar(name[[4]], lit_xm[[4]], label=' Lit Value (If Exists)', alpha=.4)
 plt.legend()
 plt.savefig('figures/figure7')
+
