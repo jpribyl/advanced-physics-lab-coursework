@@ -55,7 +55,6 @@ b_cal_mass_difference = b_cal_scale_no_current - b_cal_scale_with_current
 # print(b_cal_mass_difference)
 
 
-
 ################################
 # MAGNETIC FIELD EQUATION
 ################################
@@ -63,6 +62,7 @@ b_cal_mass_difference = b_cal_scale_no_current - b_cal_scale_with_current
 # define the magnetic field as in lecture
 def mag_field(mass, current, length):
     return (mass * g) / (current * length)
+
 
 bcal = mag_field(b_cal_mass_difference, b_cal_current, b_cal_length)
 
@@ -77,8 +77,10 @@ b_cal_error = bcal.apply(lambda x: x.s)
 # same thing for the current
 current_values = b_cal_current.apply(lambda x: x.n)
 
+
 def lin_fit(x, a, b):
     return a*x + b
+
 
 # propagating error for model fits is outside the scope of this course
 popt, pcov = curve_fit(lin_fit, current_values, b_cal_values)
@@ -91,15 +93,27 @@ b_fit = lin_fit(current_values, *popt)
 plt.errorbar(current_values,
              b_cal_values,
              yerr=b_cal_error,
-             fmt = 'o',
-            label='B Data')
+             fmt='o',
+             label='B Data')
 
 plt.plot(current_values, b_fit, label='B Fit')
-plt.ylim(.4,.43)
+plt.ylim(.4, .43)
 plt.legend()
 plt.savefig('figures/figure1.png')
+plt.xlabel('Current Value (A)')
+plt.ylabel('Residuals (T)')
+plt.show()
 
-
+r_i = b_cal_values - b_fit
+plt.clf()
+plt.errorbar(
+    current_values,
+    r_i,
+    yerr=b_cal_error,
+    fmt='o')
+plt.xlabel('Current Value (A)')
+plt.ylabel('Residuals (T)')
+plt.show()
 
 
 ################################
@@ -130,8 +144,8 @@ of 80,000
 '''
 area[4] = area[4].n
 
-height = df['height_sample'].apply(lambda x: ufloat(x, .0001)) 
-real_mass = df['sample_mass_si'].apply(lambda x: ufloat(x, .000001)) 
+height = df['height_sample'].apply(lambda x: ufloat(x, .0001))
+real_mass = df['sample_mass_si'].apply(lambda x: ufloat(x, .000001))
 volume = area * height
 theory_mass = volume * density
 
@@ -153,6 +167,7 @@ sample_mass_difference = no_sample_magnet_mass - sample_magnet_mass
 def xm(mass_difference, area):
     return (2 * mu0 * mass_difference * g) / (area * bcal**2)
 
+
 sample_xm = xm(sample_mass_difference, area)
 sample_xm_values = sample_xm.apply(lambda x: x.n)
 sample_xm_err = sample_xm.apply(lambda x: x.s)
@@ -166,32 +181,39 @@ plt.bar(name[0:4], sample_xm_values[0:4], yerr=sample_xm_err[0:4],
         label='Data', alpha=.5)
 
 plt.bar(name[0:4], lit_xm[0:4], label=' Lit Value (If Exists)', alpha=.4)
+plt.ylabel('Volume X_m in SI')
 plt.legend()
 plt.savefig('figures/figure2')
+plt.show()
 
 plt.clf()
 plt.bar(name[[5,6,9,10,11]], sample_xm_values[[5,6,9,10,11]],
         yerr=sample_xm_err[[5,6,9,10,11]], alpha=.5, label='Data')
 
 plt.bar(name[[5,6,9,10,11]], lit_xm[[5,6,9,10,11]], label=' Lit Value (If Exists)', alpha=.4)
+plt.ylabel('Volume X_m in SI')
 plt.legend()
 plt.savefig('figures/figure3')
+plt.show()
 
 plt.clf()
 plt.bar(name[[7,8,13,14]], sample_xm_values[[7,8,13,14]],
         yerr=sample_xm_err[[7,8,13,14]],label='Data')
-
 plt.bar(name[[7,8,13,14]], lit_xm[[7,8,13,14]], label=' Lit Value (If Exists)', alpha=.4)
+plt.ylabel('Volume X_m in SI')
 plt.legend()
 plt.savefig('figures/figure4')
+plt.show()
 
 plt.clf()
-plt.bar(name[[15,17]], sample_xm_values[[15,17]], 
+plt.bar(name[[15,17]], sample_xm_values[[15,17]],
         yerr=sample_xm_err[[15,17]], label='Data')
 
 plt.bar(name[[15,17]], lit_xm[[15,17]], label=' Lit Value (If Exists)', alpha=.4)
+plt.ylabel('Volume X_m in SI')
 plt.legend()
 plt.savefig('figures/figure5')
+plt.show()
 
 
 plt.clf()
@@ -199,12 +221,23 @@ plt.bar(name[[12,16,18]], sample_xm_values[[12,16,18]],
         yerr=sample_xm_err[[12,16,18]], label='Data')
 
 plt.bar(name[[12,16,18]], lit_xm[[12,16,18]], label=' Lit Value (If Exists)', alpha=.4)
+plt.ylabel('Volume X_m in SI')
 plt.legend()
 plt.savefig('figures/figure6')
+plt.show()
 
 plt.clf()
 plt.bar(name[[4]], sample_xm_values[[4]], yerr=sample_xm_err[[4]], label='Data')
 plt.bar(name[[4]], lit_xm[[4]], label=' Lit Value (If Exists)', alpha=.4)
+plt.ylabel('Volume X_m in SI')
 plt.legend()
 plt.savefig('figures/figure7')
+plt.show()
 
+
+plt.clf()
+plt.errorbar(lit_xm, sample_xm_values, fmt='.', yerr=sample_xm_err)
+plt.xlabel('Literature X_m')
+plt.ylabel('Measured X_m')
+plt.savefig('figures/figure8')
+plt.show()
