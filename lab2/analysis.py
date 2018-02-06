@@ -3,8 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 from uncertainties import ufloat
-from uncertainties.umath import *
-from uncertainties import unumpy
+# from uncertainties.umath import *
+# from uncertainties import unumpy
 from uncertainties.unumpy import uarray
 
 ################################
@@ -25,10 +25,9 @@ with open('data/magnetic.csv') as file:
 '''
 
 
-
 # into pandas
 xl = pd.ExcelFile('data/magnetic.xlsx')
-df =xl.parse('Sheet1')
+df = xl.parse('Sheet1')
 
 
 ################################
@@ -41,7 +40,6 @@ b_cal_length = 10.00 / 1000
 # you can apply the error with a lambda function or uarray (see a few lines down)
 b_cal_scale_no_current = df['scale_no_mag_si'].dropna().apply(lambda x: ufloat(x, .00001))
 b_cal_scale_with_current = df['scale_with_mag_si'].dropna().apply(lambda x: ufloat(x, .00001))
-
 
 
 # current error according to the manufacturer's specs
@@ -99,9 +97,9 @@ plt.errorbar(current_values,
 plt.plot(current_values, b_fit, label='B Fit')
 plt.ylim(.4, .43)
 plt.legend()
-plt.savefig('figures/figure1.png')
 plt.xlabel('Current Value (A)')
-plt.ylabel('Residuals (T)')
+plt.ylabel('Magnetic Field (T)')
+plt.savefig('figures/figure1.png')
 plt.show()
 
 r_i = b_cal_values - b_fit
@@ -113,7 +111,8 @@ plt.errorbar(
     fmt='o')
 plt.xlabel('Current Value (A)')
 plt.ylabel('Residuals (T)')
-plt.show()
+plt.savefig('figures/figure1b.png')
+# plt.show()
 
 
 ################################
@@ -184,7 +183,7 @@ plt.bar(name[0:4], lit_xm[0:4], label=' Lit Value (If Exists)', alpha=.4)
 plt.ylabel('Volume X_m in SI')
 plt.legend()
 plt.savefig('figures/figure2')
-plt.show()
+# plt.show()
 
 plt.clf()
 plt.bar(name[[5,6,9,10,11]], sample_xm_values[[5,6,9,10,11]],
@@ -194,7 +193,7 @@ plt.bar(name[[5,6,9,10,11]], lit_xm[[5,6,9,10,11]], label=' Lit Value (If Exists
 plt.ylabel('Volume X_m in SI')
 plt.legend()
 plt.savefig('figures/figure3')
-plt.show()
+# plt.show()
 
 plt.clf()
 plt.bar(name[[7,8,13,14]], sample_xm_values[[7,8,13,14]],
@@ -203,7 +202,7 @@ plt.bar(name[[7,8,13,14]], lit_xm[[7,8,13,14]], label=' Lit Value (If Exists)', 
 plt.ylabel('Volume X_m in SI')
 plt.legend()
 plt.savefig('figures/figure4')
-plt.show()
+# plt.show()
 
 plt.clf()
 plt.bar(name[[15,17]], sample_xm_values[[15,17]],
@@ -213,7 +212,7 @@ plt.bar(name[[15,17]], lit_xm[[15,17]], label=' Lit Value (If Exists)', alpha=.4
 plt.ylabel('Volume X_m in SI')
 plt.legend()
 plt.savefig('figures/figure5')
-plt.show()
+# plt.show()
 
 
 plt.clf()
@@ -224,7 +223,7 @@ plt.bar(name[[12,16,18]], lit_xm[[12,16,18]], label=' Lit Value (If Exists)', al
 plt.ylabel('Volume X_m in SI')
 plt.legend()
 plt.savefig('figures/figure6')
-plt.show()
+# plt.show()
 
 plt.clf()
 plt.bar(name[[4]], sample_xm_values[[4]], yerr=sample_xm_err[[4]], label='Data')
@@ -232,12 +231,40 @@ plt.bar(name[[4]], lit_xm[[4]], label=' Lit Value (If Exists)', alpha=.4)
 plt.ylabel('Volume X_m in SI')
 plt.legend()
 plt.savefig('figures/figure7')
-plt.show()
+# plt.show()
 
 
 plt.clf()
-plt.errorbar(lit_xm, sample_xm_values, fmt='.', yerr=sample_xm_err)
-plt.xlabel('Literature X_m')
-plt.ylabel('Measured X_m')
+x = np.linspace(-.001, .0175)
+y = x
+plt.plot(x, y, label='y = x (desired result)')
+
+plt.errorbar(lit_xm, sample_xm_values, fmt='.', yerr=sample_xm_err, label='Data Points')
+plt.xlabel('Literature X_m in SI (Unitless)')
+plt.ylabel('Measured X_m (Unitless)')
+
+plt.legend()
 plt.savefig('figures/figure8')
-plt.show()
+# plt.show()
+
+'''
+This labels all the points on the scatterplot... but it gets loud with this
+data
+# plot_df = pd.concat([name, lit_xm, sample_xm_values], axis=1)
+# plot_df.columns = ['name', 'lit_xm', 'sample_xm_values']
+
+# for i, point in plot_df.iterrows():
+    # plt.annotate(str(point['name']), (point['lit_xm'], point['sample_xm_values']))
+
+# plt.xlim(-.001, 0.0001)
+# plt.ylim(-.001, 0.000)
+
+# plt.xlim(-.00005, 0.0006)
+# plt.ylim(-.000, 0.00005)
+# plt.savefig('figures/figure9')
+
+# plt.xlim(-.00005, 0.0006)
+# plt.ylim(.000, .001)
+# plt.savefig('figures/figure9')
+# plt.show()
+'''
