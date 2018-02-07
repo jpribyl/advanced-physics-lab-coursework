@@ -36,10 +36,13 @@ df = xl.parse('Sheet1')
 
 b_cal_length = 10.00 / 1000
 
+vile_weight = df['vile_weights'].dropna().apply(lambda x: ufloat(x, .000001))
+vile_weight = vile_weight.sum() / len(vile_weight)
+
 # magnet masses from calibration with and without the current turned on
 # you can apply the error with a lambda function or uarray (see a few lines down)
-b_cal_scale_no_current = df['scale_no_mag_si'].dropna().apply(lambda x: ufloat(x, .00001))
-b_cal_scale_with_current = df['scale_with_mag_si'].dropna().apply(lambda x: ufloat(x, .00001))
+b_cal_scale_no_current = df['scale_no_mag_si'].dropna().apply(lambda x: ufloat(x, .000001))
+b_cal_scale_with_current = df['scale_with_mag_si'].dropna().apply(lambda x: ufloat(x, .000001))
 
 
 # current error according to the manufacturer's specs
@@ -100,7 +103,7 @@ plt.legend()
 plt.xlabel('Current Value (A)')
 plt.ylabel('Magnetic Field (T)')
 plt.savefig('figures/figure1.png')
-plt.show()
+# plt.show()
 
 r_i = b_cal_values - b_fit
 plt.clf()
@@ -144,12 +147,13 @@ of 80,000
 area[4] = area[4].n
 
 height = df['height_sample'].apply(lambda x: ufloat(x, .0001))
-real_mass = df['sample_mass_si'].apply(lambda x: ufloat(x, .000001))
+real_mass = df['sample_mass_si'].apply(lambda x: ufloat(x, .000001)) - vile_weight
 volume = area * height
 theory_mass = volume * density
 
 # ensure that there are no percentages over 100 without dropping uncertainties
-percent_real = (real_mass / theory_mass).apply(lambda x: ufloat(min(x.n, 1), x.s))
+percent_real = (real_mass / theory_mass).apply(lambda x: ufloat(min(abs(x.n), 1), x.s))
+percent_real[4] = percent_real[4].n
 
 # update area so that it represents the actual area occupied by the substance
 area = area * percent_real
@@ -237,15 +241,24 @@ plt.savefig('figures/figure7')
 plt.clf()
 x = np.linspace(-.001, .0175)
 y = x
-plt.plot(x, y, label='y = x (desired result)')
+plt.plot(x, y, '.', label='y = x (desired result)')
 
 plt.errorbar(lit_xm, sample_xm_values, fmt='.', yerr=sample_xm_err, label='Data Points')
 plt.xlabel('Literature X_m in SI (Unitless)')
 plt.ylabel('Measured X_m (Unitless)')
 
+# plt.show()
+
+# print(sample_xm_values)
+xm_fit_data = pd.concat([sample_xm_values, lit_xm], axis=1).dropna()
+xm_fit_data.columns=['data', 'lit']
+
+popt, pcov = curve_fit(lin_fit, xm_fit_data['lit'], xm_fit_data['data'])
+xm_fit = lin_fit(xm_fit_data['lit'], *popt)
+plt.plot(xm_fit_data['lit'], xm_fit, label='Linear fit to Our Data')
 plt.legend()
 plt.savefig('figures/figure8')
-# plt.show()
+plt.show()
 
 '''
 This labels all the points on the scatterplot... but it gets loud with this
