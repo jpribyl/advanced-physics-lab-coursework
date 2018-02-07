@@ -2,7 +2,8 @@ This repo holds everything from the phsx 444 Advanced Lab course. That includes 
 
 Here is the structure:
 ```
-/----all directories correspond to a lab. lab1/ is the first lab, lab2/ the second, etc
+All directories in this repo correspond to a lab. lab1/ is the first lab, lab2/ the second, etc. Within each lab's directory, you will find the following structure:
+
     |----lab<x>/
             |-----all .py python analysis files
             |-----figures/
