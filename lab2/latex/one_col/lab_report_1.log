@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.1.24)  7 FEB 2018 16:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.2.8)  5 MAR 2018 12:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -698,12 +698,24 @@ Package caption Info: End \AtBeginDocument code.
 \c__siunitx_mathtt_int=\count289
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] </home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1.png, id=16, 462.528pt x 346.896pt>
-File: /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1.png Graphic file (type png)
-<use /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1.png>
-Package pdftex.def Info: /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1.png used on input line 137.
-(pdftex.def)             Requested size: 227.6217pt x 170.71628pt.
-[2 </home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1.png>]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+
+LaTeX Warning: File `/home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1.png' not found on input line 137.
+
+
+./lab_report_1.tex:137: Package pdftex.def Error: File `/home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1.png' not found.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.137 ...py3/phx444/labs/lab2/figures/figure1.png}
+                                                  
+Using draft setting for this image.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[2]
 LaTeX Font Info:    Try loading font information for OML+cmr on input line 163.
 (/usr/share/texlive/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
@@ -716,40 +728,87 @@ File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 163.
-[3] </home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1b.png, id=30, 462.528pt x 346.896pt>
-File: /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1b.png Graphic file (type png)
-<use /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1b.png>
-Package pdftex.def Info: /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1b.png used on input line 242.
-(pdftex.def)             Requested size: 227.6217pt x 170.71628pt.
-[4] [5 </home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1b.png>] </home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/tablefigure.png, id=38, 614.295pt x 495.8525pt>
-File: /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/tablefigure.png Graphic file (type png)
-<use /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/tablefigure.png>
-Package pdftex.def Info: /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/tablefigure.png used on input line 331.
-(pdftex.def)             Requested size: 284.52878pt x 284.53038pt.
-[6] [7 </home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/tablefigure.png>] </home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure8.png, id=49, 462.528pt x 346.896pt>
-File: /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure8.png Graphic file (type png)
-<use /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure8.png>
-Package pdftex.def Info: /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure8.png used on input line 394.
-(pdftex.def)             Requested size: 227.6217pt x 170.71628pt.
-</home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/levitation.jpg, id=50, 675.52374pt x 391.4625pt>
-File: /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/levitation.jpg Graphic file (type jpg)
-<use /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/levitation.jpg>
-Package pdftex.def Info: /home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/levitation.jpg used on input line 411.
-(pdftex.def)             Requested size: 227.62381pt x 170.71487pt.
-[8 </home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure8.png>] [9 </home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/levitation.jpg>] [10] (./lab_report_1.aux) ) 
+[3]
+
+LaTeX Warning: File `/home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1b.png' not found on input line 242.
+
+
+./lab_report_1.tex:242: Package pdftex.def Error: File `/home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1b.png' not found.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.242 ...y3/phx444/labs/lab2/figures/figure1b.png}
+                                                  
+Using draft setting for this image.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[4] [5]
+
+LaTeX Warning: File `/home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/tablefigure.png' not found on input line 331.
+
+
+./lab_report_1.tex:331: Package pdftex.def Error: File `/home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/tablefigure.png' not found.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.331 ...phx444/labs/lab2/figures/tablefigure.png}
+                                                  
+Using draft setting for this image.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[6] [7]
+
+LaTeX Warning: File `/home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure8.png' not found on input line 394.
+
+
+./lab_report_1.tex:394: Package pdftex.def Error: File `/home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure8.png' not found.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.394 ...py3/phx444/labs/lab2/figures/figure8.png}
+                                                  
+Using draft setting for this image.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `/home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/levitation.jpg' not found on input line 411.
+
+
+./lab_report_1.tex:411: Package pdftex.def Error: File `/home/jp/kod/py/bin/venv/py3/phx444/labs/lab2/figures/levitation.jpg' not found.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.411 .../phx444/labs/lab2/figures/levitation.jpg}
+                                                  
+Using draft setting for this image.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[8] [9] [10] (./lab_report_1.aux) ) 
 Here is how much of TeX's memory you used:
- 16982 strings out of 493029
- 338747 string characters out of 6136234
- 401421 words of memory out of 5000000
- 20368 multiletter control sequences out of 15000+600000
+ 16962 strings out of 493029
+ 337300 string characters out of 6136235
+ 401424 words of memory out of 5000000
+ 20348 multiletter control sequences out of 15000+600000
  14113 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  40i,6n,44p,10440b,1252s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on lab_report_1.pdf (10 pages, 333980 bytes).
+Output written on lab_report_1.pdf (10 pages, 209898 bytes).
 PDF statistics:
- 119 PDF objects out of 1000 (max. 8388607)
- 79 compressed objects within 1 object stream
+ 109 PDF objects out of 1000 (max. 8388607)
+ 78 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,0 +1,188 @@
+import pandas as pd
+import numpy as np
+import mysql.connector as sql
+import matplotlib.pyplot as plt
+import uncertainties
+import os
+from uncertainties.unumpy import uarray
+
+password = os.environ['PW']
+
+db_connect = sql.connect(
+    host='localhost', 
+    database='444lab3', 
+    user='root', 
+    password=password)
+
+
+def plot_scope(filepath, multiplier=1):
+    df = pd.read_csv(filepath)
+    df.columns = [1,2,3,'time', 'voltage', 6]
+    plt.plot(df['time'], multiplier * df['voltage'])
+
+
+def query(query):
+    print(pd.read_sql(query, con=db_connect))
+
+
+class measurement:
+    def __init__(self, measurementId):
+        self.measurementId = measurementId
+
+        print(pd.read_sql('select * \
+                          from measurement_info \
+                          where id =' + str(self.measurementId),
+                         con = db_connect))
+
+
+    def getAnalyzerData(self):
+        """
+        :returns: panadas dataframe with analyzer data from a given measurement
+
+        """
+        self.an = pd.read_sql(
+            'select \
+                frequency, \
+                voltage \
+                from analyzerData \
+                where measurements_id = ' + str(self.measurementId), 
+            con=db_connect)
+
+        # accuracy of ± 25 ppm from 20°C to 40°C.
+        self.freqan = pd.Series(uarray(
+            self.an['frequency'], 
+            25 * self.an['frequency'] / 1000000))
+
+        #convert to kHz
+        self.freqan = self.freqan/1000.
+
+        # accuracy of ± 0.3 dB ± 0.02% of full scale (excluding windowing effects)
+        an_scale = abs(max(self.an['voltage']) - min(self.an['voltage']))
+        self.dbvan = pd.Series(uarray(self.an['voltage'], .3 + .02 * an_scale))
+
+        self.xan = self.freqan
+        self.yan = self.dbvan
+
+        return self.an
+
+
+    def getScopeData(self):
+        """
+        :returns: panadas dataframe with scope data from a given measurement
+
+        """
+        try:
+            self.sc = pd.read_sql(
+                'select \
+                    time, \
+                    voltage \
+                    from scopeData \
+                    where measurements_id = ' + str(self.measurementId), 
+                con=db_connect)
+
+            # accuracy of ±3%, from 10 mV/div to 5 V/div
+            self.voltage = pd.Series(
+                uarray(
+                    self.sc['voltage'], 
+                    abs(self.sc['voltage'] * 3 / 100))
+            )
+
+            # accuracy of ± 50 ppm
+            self.time = pd.Series(
+                uarray(
+                    self.sc['time'], 
+                    abs(50 * self.sc['time'] / 1000000))
+            )
+
+            self.time_step = self.time[2]- self.time[1]
+
+
+            self.xsc = self.time
+            self.ysc = self.voltage
+
+            return self.sc
+
+        except Exception as e:
+            print('could not get scope data: ', e)
+
+    def fourierTransformVoltage(self):
+        """
+        :returns: nothing - however, will fourier transform, normalize, and
+        convert voltage to dBv and set all the necessary variables for plotting
+
+        """
+        try:
+            #do fft on oscilloscope voltage data
+            self.voltage = self.voltage.apply(lambda x: x.n)
+            self.time = self.time.apply(lambda x: x.n)
+            self.time_step = self.time[2]- self.time[1]
+            # print(self.voltage)
+            fftvolt = np.fft.fft(self.voltage)
+            #clean up and normalize
+            fftvolt = np.fft.fftshift(fftvolt)
+            fftvolt= 2*fftvolt/float(len(self.voltage))
+
+            #convert voltage fft to dbv
+            self.fftdbv = 20.*np.log10(np.abs(fftvolt))
+
+            #determine the time step and window length for performing fft on x-axis (time)
+            self.win_length = len(self.time)
+
+            self.fftfreq = np.fft.fftfreq(self.win_length, self.time_step)
+            self.fftfreq = np.fft.fftshift(self.fftfreq)
+
+            #convert to kHz
+            self.fftfreq = self.fftfreq/1000.
+
+            self.xsc = self.fftfreq
+            self.ysc = self.fftdbv
+
+        except Exception as e:
+            print('could not perform FT: ', e)
+
+    def plotData(self, title, ylabel, xlabel, scStyle='-', anStyle='-'):
+        #try to plot scope data
+        try:
+            # self.xscvalues = self.xsc.apply(lambda x: x.n)
+            # self.yscvalues = self.ysc.apply(lambda y: y.n)
+
+            # self.xscerror = self.xsc.apply(lambda x: x.s)
+            # self.yscerror = self.ysc.apply(lambda y: y.s)
+            plt.plot(self.xsc, self.ysc, scStyle, label = 'FFT of Oscilloscope Data')
+        except Exception as e:
+            pass
+
+        try:
+            self.xanvalues = self.xan.apply(lambda x: x.n)
+            self.yanvalues = self.yan.apply(lambda y: y.n)
+
+            self.xanerror = self.xan.apply(lambda x: x.s)
+            self.yanerror = self.yan.apply(lambda y: y.s)
+
+            plt.errorbar(self.xanvalues, self.yanvalues, yerr=self.yanerror,
+                         fmt='.', label='SR770 Data Points')
+            plt.plot(self.xanvalues, self.yanvalues, anStyle, alpha=.5,
+                    label='Line fit of SR770 Points')
+            plt.xlim(0,max(self.xanvalues))
+        except Exception as e:
+            pass
+
+        try:
+            plt.ylim(min(self.yanvalues)-10, max(self.yscvalues)+10)
+        except Exception as e:
+            pass
+
+        plt.title(title)
+        plt.ylabel(ylabel)
+        plt.xlabel(xlabel)
+
+    def model(self, title, ylabel, xlabel, plotAn=True, plotSc=True):
+
+        if plotAn:
+            self.getAnalyzerData()
+
+        if plotSc:
+            self.getScopeData()
+            self.fourierTransformVoltage()
+
+        self.plotData(title, ylabel, xlabel)

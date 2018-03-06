@@ -1,0 +1,173 @@
+import numpy as np
+import matplotlib.pyplot as plt 
+from scipy.optimize import curve_fit 
+from uncertainties import ufloat
+
+g = 9.8  #m/s^2
+#B = 0.4246  #Tesla
+mu = 1.25 * 10**-6  #Henry/m
+
+#extract all the data
+#data for measuring the B-field
+with open('Mag_Field_Data.csv') as f:
+    data = np.genfromtxt(f, delimiter=',', skip_header=1)
+    mb = data[:,3] #kg
+    ma = data[:,4] #kg
+    I = data[:,2] #Amps
+    
+#data for measuring chi_m
+with open('All_Mag_Data2.csv') as fi:
+    mag_d = np.genfromtxt(fi, delimiter=',', skip_header=1)
+    sample_m = mag_d[:,10] #kg 
+    sample_mag = mag_d[:,11] #kg
+    mass_err = mag_d[:,3] #kg
+    scale_mass = mag_d[:,12] #kg
+    a1 = mag_d[:,5] #m
+    a2 = mag_d[:,6] #m
+    height = mag_d[:,7] #m
+    len_err = mag_d[:,8] #m
+    density = mag_d[:,13] #kg/m^3
+    accepted_chi = mag_d[:,14] #unitless(SI)
+    height_err = mag_d[:,15] #m
+    vile_weight = mag_d[:,16] #kg
+    
+#determine the magnetic field strength using F = ILB = (m1-m0)g
+    
+#matrix of the length of the copper foil with current
+L = np.ones(len(mb))*10.00*10**-3
+
+#current error (based on manual for the power supply)
+I_err = 1000.*I*10.**-6 + 3.*15.*10.**-6
+
+#function to add error to the appropriate measurements    
+def make_ufloat(x, err):
+    y = np.array([])
+    for i in range(len(x)):
+        y = np.append(y, ufloat(x[i], err[i]))
+    return y
+
+#include the error for all the necessary measurements
+#data for measuring the B-field
+uncertain_mb = make_ufloat(mb, mass_err)
+uncertain_ma = make_ufloat(ma, mass_err)
+uncertain_I = make_ufloat(I, I_err)
+uncertain_L = make_ufloat(L, len_err)
+#data for measuring chi_m
+unc_a1 = make_ufloat(a1, len_err)
+unc_a2 = make_ufloat(a2, len_err)
+unc_height = make_ufloat(height, height_err)
+unc_sample_m = make_ufloat(sample_m, mass_err)
+unc_sample_mag = make_ufloat(sample_mag, mass_err)
+unc_scale_mass = make_ufloat(scale_mass, mass_err)
+
+#the sample mass must be adjusted to take the vile mass into account
+vile_weight = vile_weight[0:4]
+unc_vile = make_ufloat(vile_weight, mass_err)
+avg_vile_unc = unc_vile.sum()/len(unc_vile)
+unc_sample_m = unc_sample_m - avg_vile_unc
+
+#calculate the B-field (B = (mb-ma)g/IL)
+B = ((uncertain_mb-uncertain_ma)*g)/(uncertain_I*uncertain_L)
+print B
+
+#functions to separate the error value and the magnetic field value
+def extract_err(arr):
+    return arr.s
+
+def extract_val(arr):
+    return arr.n
+
+B_err = map(extract_err, B)
+B_val = map(extract_val, B)
+
+#linear fit for our B-field values
+def function_to_fit(x_fit, a, b): 
+    y_fit = a*x_fit + b     
+    return y_fit 
+#initial guess for fitting
+para = np.array([0.0005, 0.42000])
+#fitting
+popt, pcov = curve_fit(function_to_fit, I[0:len(I)], B_val[0:len(I)], sigma=B_err[0:len(B_err)], p0=para) 
+print "Fit Parameters:", popt
+
+#plot measurements and linear fit
+plt.errorbar(I,B_val, yerr=B_err, fmt='8', markeredgecolor='b', markersize=10., capsize=5, ecolor='m', label='Magnetic Field Measurements') 
+plt.plot(I, function_to_fit(I, *popt), 'r', label = 'linear fit') 
+
+plt.title('Linear Fit of the Magnetic Field Strength')
+plt.ylabel('Magnetic Field (Tesla)')
+plt.xlabel('Current (Amps)')
+#plt.ylim(0.400, 0.430)
+plt.legend()
+plt.savefig('MagneticFieldStrength.png')
+plt.show()
+
+#calculate the residuals
+ris = np.array([])
+for i in range(len(B)):
+    ris = np.append(ris, B_val[i]-function_to_fit(I, *popt)[i])
+
+print ris
+
+plt.figure()
+plt.errorbar(I,ris, yerr=B_err, fmt='s', markeredgecolor='b', markersize=8., capsize=5, ecolor='c', label='residuals')
+plt.plot(np.array([0, 2.5]), np.array([0, 0]), 'r')
+#plt.axis('scaled')
+plt.xlim(0, 2.5)
+#plt.ylim(-0.01, 0.01)
+plt.ylabel("Magnetic Field Residual (Tesla)")
+plt.xlabel("Current (Amps)")
+plt.title("Residuals of Measured Magnetic Field Data")
+plt.savefig('MagneticFieldResiduals.png')
+plt.legend()
+plt.show()
+
+#determine the magnetic susceptibilities
+#first average the B-field measurements
+mean_B_val = np.mean(B_val)
+mean_B_err = np.mean(B_err)/np.sqrt(len(B))
+mean_B = ufloat(mean_B_val, mean_B_err)
+
+#determine the actual cross sectional area of material in the B-field
+area = unc_a1*unc_a2
+#this sample is so small that including the uncertainty causes a ridiculous error bar
+#therefore, we will assume that there is no error for this measurement and use the
+#dimensional values given by the manual 
+area[4] = area[4].n
+theory_mass = area*unc_height*density
+percent_mass = unc_sample_m/theory_mass
+area = area*percent_mass
+
+#mass difference of magnetic without sample minus magnet with sample
+meas_mass_diff = unc_scale_mass - unc_sample_mag
+
+#function to calculate the magnetic susceptibility
+#equation based on found by rearranging F = chi_m*A*(Bb^2 - Bt^2)/2*mu = mass_diff*g
+#here, Bt is 0T, since the top of our mass is far enough above the magnet to be outside 
+#the magnetic field
+def chi_m(meas_mass_diff, area):
+#    chi_m = (2*mu*meas_mass_diff*g*unc_sample_m)/(area*theory_mass*(mean_B**2))
+    chi_m = (2*mu*meas_mass_diff*g)/(area*(mean_B**2))
+    return chi_m
+
+#calculate chi_m for all the samples
+meas_sample_chi = chi_m(meas_mass_diff, area)
+#separate out the chi_m value and the error
+meas_chi_err = map(extract_err, meas_sample_chi)
+meas_chi_val = map(extract_val, meas_sample_chi)
+
+print meas_sample_chi
+
+#plot chi_m versus the "accepted" chi_m (if it exists)
+plt.figure()
+plt.clf()
+
+plt.errorbar(accepted_chi, meas_chi_val, yerr=meas_chi_err, fmt='8', markeredgecolor='b', markersize=10., capsize=5, ecolor='m', label='Magnetic Susceptibility Measurements') 
+
+plt.title('Magnetic Susceptibility for 19 Samples')
+plt.xlabel('"Accepted" Magnetic Susceptibility (SI)')
+plt.ylabel('Magnetic Susceptibility Measurements (SI)')
+#plt.ylim(-0.01, 0.02)
+plt.legend()
+plt.savefig('MagneticSusceptibility.png')
+plt.show()
