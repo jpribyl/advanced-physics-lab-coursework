@@ -54,7 +54,16 @@
 
 \begin{abstract}
 
-    asdf
+    This lab is designed to familiarize the student with thinking in the
+    frequency domain. It requires far more data collection than the previous
+    labs. There are four main objectives. First, we worked with a few simple
+    input functions in order to become familiar with the spectrum analyzer.
+    Second, we investigated the response of an LRC circuit to several different
+    signal types. Third, we did the same thing to an acoustical cavity. And
+    lastly, we examined a system of coupled torsional reed oscillators.
+    Unfortunately, we ran out of time and were not able to collect all of the
+    necessary data from the reed oscillators - so, this report will only
+    include an informal discussion of theory and observed results.
     
 \end{abstract}
 
@@ -65,21 +74,18 @@
 %----------------------------------------------------------------------------------------
 \section{Introduction}
 
-Almost every material has some degree of magnetism present. However, magnetic
-forcs have a tendency to be quite weak (to the point of being largely
-imperceptible). Unlike gravitational forces, electromagnetic forces can be
-attractive or repulsive. Additionally, any time you place an object 
-inside a magnetic field, the charges inside it tend to move around. 
-Weasel's are funny, so let's pretend that we have a weasel sitting between a couple of magnets.
+Somehow, every undergraduate physics student manages to sneak through their
+classes without ever fully understanding Fourier methods. Brian took it upon
+himself to fill this educational hole with experimental knowledge. That means
+this lab operates almost entirely in the frequency domain. Or, in other words,
+we Fourier Transform \textit{everything}.
 
-As the weasel's charges move around, they create \textit{another} magnetic field. 
-Sometimes this second `induced' magnetic field is in the same direction as the original field, 
-and other times it is in the opposite direction. I've never heard of an induced 
-field that goes off in some random direction.. but magnets (and weasels) tend to have 
-minds of their own, so maybe it's possible. At any rate, if the weasel's induced 
-field is in the same direction as the original, we would call the weasel
-Paramagnetic. If it is in the opposite direction, we would call the weasel
-Diamagnetic.
+Although it's pretty tough to get funding these days, MSU still has neat toys
+leftover from the 90s. Among those is the SR770 Spectrum Analyzer. It boasts a
+peacefully green-hued digital output and the capacity to live stream the
+frequency domain of a time-dependent signal. However, it does not have the
+words  \textit{\textbf{DON'T PANIC}}  inscribed in large friendly letters on
+its cover.
 
 In this lab, we examine the magnetic properties of several substances to figue
 out how many charges like to move around and what direction they tend to move.

@@ -9,9 +9,9 @@ from uncertainties.unumpy import uarray
 password = os.environ['PW']
 
 db_connect = sql.connect(
-    host='localhost', 
-    database='444lab3', 
-    user='root', 
+    host='localhost',
+    database='444lab3',
+    user='root',
     password=password)
 
 
@@ -26,10 +26,22 @@ def query(query):
 
 
 class measurement:
+    '''
+    Objects of this class correspond to measured data.
+
+    Attributes:
+
+    '''
     def __init__(self, measurementId):
         self.measurementId = measurementId
 
-        print(pd.read_sql('select * \
+        print(pd.read_sql('select \
+                          id, \
+                          filepath, \
+                          form_name, \
+                          channel_num, \
+                          frequency, \
+                          amplitude \
                           from measurement_info \
                           where id =' + str(self.measurementId),
                          con = db_connect))
@@ -45,12 +57,12 @@ class measurement:
                 frequency, \
                 voltage \
                 from analyzerData \
-                where measurements_id = ' + str(self.measurementId), 
+                where measurements_id = ' + str(self.measurementId),
             con=db_connect)
 
         # accuracy of ± 25 ppm from 20°C to 40°C.
         self.freqan = pd.Series(uarray(
-            self.an['frequency'], 
+            self.an['frequency'],
             25 * self.an['frequency'] / 1000000))
 
         #convert to kHz
@@ -77,20 +89,20 @@ class measurement:
                     time, \
                     voltage \
                     from scopeData \
-                    where measurements_id = ' + str(self.measurementId), 
+                    where measurements_id = ' + str(self.measurementId),
                 con=db_connect)
 
             # accuracy of ±3%, from 10 mV/div to 5 V/div
             self.voltage = pd.Series(
                 uarray(
-                    self.sc['voltage'], 
+                    self.sc['voltage'],
                     abs(self.sc['voltage'] * 3 / 100))
             )
 
             # accuracy of ± 50 ppm
             self.time = pd.Series(
                 uarray(
-                    self.sc['time'], 
+                    self.sc['time'],
                     abs(50 * self.sc['time'] / 1000000))
             )
 
@@ -140,18 +152,15 @@ class measurement:
         except Exception as e:
             print('could not perform FT: ', e)
 
-    def plotData(self, title, ylabel, xlabel, scStyle='-', anStyle='-'):
+    def plotData(self, title, ylabel, xlabel, scStyle='-', anStyle='-',
+                 anAlpha=1):
         #try to plot scope data
         try:
-            # self.xscvalues = self.xsc.apply(lambda x: x.n)
-            # self.yscvalues = self.ysc.apply(lambda y: y.n)
-
-            # self.xscerror = self.xsc.apply(lambda x: x.s)
-            # self.yscerror = self.ysc.apply(lambda y: y.s)
             plt.plot(self.xsc, self.ysc, scStyle, label = 'FFT of Oscilloscope Data')
         except Exception as e:
             pass
 
+        #try to plot analyzer data
         try:
             self.xanvalues = self.xan.apply(lambda x: x.n)
             self.yanvalues = self.yan.apply(lambda y: y.n)
@@ -159,10 +168,15 @@ class measurement:
             self.xanerror = self.xan.apply(lambda x: x.s)
             self.yanerror = self.yan.apply(lambda y: y.s)
 
+            # plot the analyzer data with error bars
             plt.errorbar(self.xanvalues, self.yanvalues, yerr=self.yanerror,
-                         fmt='.', label='SR770 Data Points')
+                         fmt='.', label='SR770 Data Points', alpha=anAlpha)
+
+            # connect the points with a faint line
             plt.plot(self.xanvalues, self.yanvalues, anStyle, alpha=.5,
                     label='Line fit of SR770 Points')
+
+            # limit the window to something reasonable
             plt.xlim(0,max(self.xanvalues))
         except Exception as e:
             pass
@@ -176,7 +190,14 @@ class measurement:
         plt.ylabel(ylabel)
         plt.xlabel(xlabel)
 
-    def model(self, title, ylabel, xlabel, plotAn=True, plotSc=True):
+    def model(
+        self,
+        title='No Title',
+        ylabel='No Label',
+        xlabel='No Label',
+        plotAn=True,
+        plotSc=True,
+        anAlpha=1):
 
         if plotAn:
             self.getAnalyzerData()
@@ -185,4 +206,4 @@ class measurement:
             self.getScopeData()
             self.fourierTransformVoltage()
 
-        self.plotData(title, ylabel, xlabel)
+        self.plotData(title, ylabel, xlabel, anAlpha=anAlpha)

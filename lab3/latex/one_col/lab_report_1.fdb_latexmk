@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1520279141 "lab_report_1.tex" "lab_report_1.pdf" "lab_report_1" 1520279143
+["pdflatex"] 1520397855 "lab_report_1.tex" "lab_report_1.pdf" "lab_report_1" 1520397856
   "/etc/texmf/web2c/texmf.cnf" 1518139615 1101 af7716885e081ab43982cab7b4672c1a ""
   "/home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1.png" 1518043222 24733 7927b0a563b1fddcb467e2d5932d91c9 ""
   "/home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1b.png" 1518043223 19264 6f1d92908710a9af2c2e59f31b3e5ac0 ""
@@ -12,6 +12,7 @@
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx9.tfm" 1136768653 1328 5442e22a7072966dbaf88ca900acf3f0 ""
+  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbxti10.tfm" 1136768653 1532 9162035f4e7176612125649e348e2195 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmex10.tfm" 1136768653 992 662f679a0b3d2d53c1b94050fdaa3f50 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1136768653 1524 4414a8315f39513458b80dfc63bff03a ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm" 1136768653 1512 f21f83efb36853c0b70002322c1ab3ad ""
@@ -33,6 +34,7 @@
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmtt8.tfm" 1136768653 768 d7b9a2629a0c353102ad947dc9221d49 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1248133631 32080 340ef9bf63678554ee606688e7b5339d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb" 1248133631 32298 c6d25bb16d1eac01ebdc6d7084126a1e ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb" 1248133631 36554 b67dc2cfa451409e100b3fcf5f506509 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb" 1248133631 36741 fa121aac0049305630cf160b86157ee4 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1248133631 36281 c355509802a035cadc5f15869451dcee ""
@@ -114,9 +116,9 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1503343927 31343 93828589fb0cea665e553ee5a17ad2d4 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1518139704 1863403 f3ff9a4253bcb5fb9a9baaf0c572cb01 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1518139850 3856889 d4c1cca44480d2b1eb2139417489e47e ""
-  "lab_report_1.aux" 1520279143 1635 1eaf55de4dc7ef0763bd8d8e84763a71 ""
-  "lab_report_1.tex" 1520279139 18598 acbcef4c72f3e83522e676dda28bce55 ""
+  "lab_report_1.aux" 1520397856 1635 1eaf55de4dc7ef0763bd8d8e84763a71 ""
+  "lab_report_1.tex" 1520397855 19036 327200ba731912596a8ec5a55f39a9f1 ""
   (generated)
-  "lab_report_1.aux"
   "lab_report_1.log"
+  "lab_report_1.aux"
   "lab_report_1.pdf"

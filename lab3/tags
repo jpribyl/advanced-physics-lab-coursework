@@ -1,0 +1,74 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+N	plot.py	/^N = 2500$/;"	v
+T	plot.py	/^T = time[2]-time[1]$/;"	v
+__init__	measurement.py	/^    def __init__(self, measurementId):$/;"	m	class:measurement
+__init__	model.py	/^    def __init__($/;"	m	class:lrcMultiFreq
+__init__	model.py	/^    def __init__($/;"	m	class:lrcMultiFreqGain
+__init__	model.py	/^    def __init__($/;"	m	class:lrcMultiFreqPhase
+__init__	model.py	/^    def __init__($/;"	m	class:lrcSine
+__init__	model.py	/^    def __init__($/;"	m	class:lrcSquare
+__init__	model.py	/^    def __init__($/;"	m	class:model
+__init__	model.py	/^    def __init__($/;"	m	class:sine
+__init__	model.py	/^    def __init__(self, freq, numPoints=6000, sampleSpacing=1\/800, amplitude=2.5):$/;"	m	class:square
+__init__	model.py	/^    def __init__(self, freq,numPoints=6000, sampleSpacing=1\/800, amplitude=2.5):$/;"	m	class:triangle
+__init__	model.py	/^    def __init__(self, freqA, freqB, ampA, ampB, numPoints=6000, sampleSpacing=1\/800):$/;"	m	class:sineMult
+__init__	model.py	/^    def __init__(self, freqA, freqB, ampA, ampB, numPoints=6000, sampleSpacing=1\/800):$/;"	m	class:sineSum
+__init__	model.py	/^    def __init__(self,$/;"	m	class:fourierModel
+__init__	model.py	/^    def __init__(self,$/;"	m	class:lrc
+a	old_main.py	/^a = model.lrcChirpNoise(xvals= lrcMeas.xanvalues, yvals=lrcMeas.yanvalues)$/;"	v
+analyzer_data	plot.py	/^analyzer_data = pd.read_csv($/;"	v
+data	main.py	/^data = measurement(1)$/;"	v
+database	measurement.py	/^    database='444lab3',$/;"	v
+db_connect	measurement.py	/^db_connect = sql.connect($/;"	v
+fourierModel	model.py	/^class fourierModel(model):$/;"	c
+fourierTransformVoltage	measurement.py	/^    def fourierTransformVoltage(self):$/;"	m	class:measurement
+getAnalyzerData	measurement.py	/^    def getAnalyzerData(self):$/;"	m	class:measurement
+getScopeData	measurement.py	/^    def getScopeData(self):$/;"	m	class:measurement
+host	measurement.py	/^    host='localhost',$/;"	v
+lrc	model.py	/^class lrc(fourierModel):$/;"	c
+lrcGainFunction	model.py	/^    def lrcGainFunction(self, x, amp, L, C, R):$/;"	m	class:lrcMultiFreqGain
+lrcMeas	old_main.py	/^lrcMeas = measurement(16)$/;"	v
+lrcMultiFreq	model.py	/^class lrcMultiFreq(lrc):$/;"	c
+lrcMultiFreqGain	model.py	/^class lrcMultiFreqGain(lrcMultiFreq):$/;"	c
+lrcMultiFreqPhase	model.py	/^class lrcMultiFreqPhase(lrcMultiFreq):$/;"	c
+lrcPhaseFunction	model.py	/^    def lrcPhaseFunction(self, x, amp, L, R, C):$/;"	m	class:lrcMultiFreqPhase
+lrcSine	model.py	/^class lrcSine(lrc):$/;"	c
+lrcSquare	model.py	/^class lrcSquare(lrc):$/;"	c
+measurement	measurement.py	/^class measurement:$/;"	c
+model	measurement.py	/^    def model($/;"	m	class:measurement
+model	model.py	/^    def model(self):$/;"	m	class:model
+model	model.py	/^    def model(self, style='--'):$/;"	m	class:fourierModel
+model	model.py	/^    def model(self, style='--'):$/;"	m	class:lrc
+model	model.py	/^    def model(self, style='--'):$/;"	m	class:lrcMultiFreqGain
+model	model.py	/^    def model(self, style='--'):$/;"	m	class:lrcMultiFreqPhase
+model	model.py	/^class model(object):$/;"	c
+mymodel	main.py	/^mymodel = model.square(5097)$/;"	v
+password	measurement.py	/^    password=password)$/;"	v
+password	measurement.py	/^password = os.environ['PW']$/;"	v
+phaseOut	model.py	/^    def phaseOut(self,$/;"	m	class:lrc
+plotData	measurement.py	/^    def plotData(self, title, ylabel, xlabel, scStyle='-', anStyle='-',$/;"	m	class:measurement
+plot_df	plot.py	/^plot_df = pd.DataFrame()$/;"	v
+plot_df	plot.py	/^plot_df = plot_df[plot_df['y'] > 0]$/;"	v
+plot_scope	measurement.py	/^def plot_scope(filepath, multiplier=1):$/;"	f
+query	measurement.py	/^def query(query):$/;"	f
+scope_data	plot.py	/^scope_data = pd.read_csv($/;"	v
+sine	model.py	/^class sine(fourierModel):$/;"	c
+sineMult	model.py	/^class sineMult(fourierModel):$/;"	c
+sineSum	model.py	/^class sineSum(fourierModel):$/;"	c
+square	model.py	/^class square(fourierModel):$/;"	c
+time	plot.py	/^time = scope_data['time']$/;"	v
+transformX	model.py	/^    def transformX(self):$/;"	m	class:fourierModel
+transformY	model.py	/^    def transformY(self):$/;"	m	class:fourierModel
+triangle	model.py	/^class triangle(fourierModel):$/;"	c
+user	measurement.py	/^    user='root',$/;"	v
+voltage	plot.py	/^voltage = scope_data['voltage']$/;"	v
+voltageOut	model.py	/^    def voltageOut(self):$/;"	m	class:lrc
+x	plot.py	/^x = np.linspace(0.0, N*T, N)$/;"	v
+xf	plot.py	/^xf = np.linspace(0.0, 1.0\/(2.0*T), N\/\/2)$/;"	v
+y	plot.py	/^y = voltage$/;"	v
+yf	plot.py	/^yf = fft(y)$/;"	v
