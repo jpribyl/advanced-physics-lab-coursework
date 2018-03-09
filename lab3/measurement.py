@@ -15,10 +15,39 @@ db_connect = sql.connect(
     password=password)
 
 
-def plot_scope(filepath, multiplier=1):
-    df = pd.read_csv(filepath)
-    df.columns = [1,2,3,'time', 'voltage', 6]
-    plt.plot(df['time'], multiplier * df['voltage'])
+def plot_an(measurementId, channel_num=1, multiplier=1):
+    voltage = pd.read_sql('select voltage \
+                            from analyzerData \
+                            where measurements_id = ' + \
+                            str(measurementId),
+                         con = db_connect)
+
+
+    frequency = pd.read_sql('select frequency \
+                            from analyzerData \
+                            where measurements_id = ' + \
+                            str(measurementId),
+                        con=db_connect)
+
+
+    plt.plot(frequency, voltage)
+
+def plot_scope(measurementId, channel_num=1, multiplier=1):
+    voltage = pd.read_sql('select voltage \
+                            from scopeData \
+                            where measurements_id = ' + \
+                            str(measurementId),
+                         con = db_connect)
+
+
+    time = pd.read_sql('select time \
+                            from scopeData \
+                            where measurements_id = ' + \
+                            str(measurementId),
+                        con=db_connect)
+
+
+    plt.plot(time, voltage)
 
 
 def query(query):
@@ -29,11 +58,28 @@ class measurement:
     '''
     Objects of this class correspond to measured data.
 
-    Attributes:
+    ATTRIBUTES:
+        :measurementId: Int - unique identifier assigned to each measurement
 
+        :an: Pandas DF - holds all analyzer data
+
+        :xan: Pandas DF - holds uncertainties and values for x component
+        :yan: Pandas DF - holds uncertainties and values for y component
+
+        :xanvalues: Pandas DF - holds values for x component
+        :yanvalues: Pandas DF - holds values for y component
+
+        :xanerror: Pandas DF - holds uncertainties for x component
+        :yanerror: Pandas DF - holds uncertainties for y component
+
+        :sc: Pandas DF - holds all oscilloscope data
+
+        :xsc: Pandas DF - holds values for x component
+        :ysc: Pandas DF - holds values for y component
     '''
-    def __init__(self, measurementId):
+    def __init__(self, measurementId, inputAmp=1):
         self.measurementId = measurementId
+        self.inputAmp = inputAmp
 
         print(pd.read_sql('select \
                           id, \
@@ -61,19 +107,19 @@ class measurement:
             con=db_connect)
 
         # accuracy of ± 25 ppm from 20°C to 40°C.
-        self.freqan = pd.Series(uarray(
+        self.frequency = pd.Series(uarray(
             self.an['frequency'],
             25 * self.an['frequency'] / 1000000))
 
         #convert to kHz
-        self.freqan = self.freqan/1000.
+        self.frequency = self.frequency/1000.
 
         # accuracy of ± 0.3 dB ± 0.02% of full scale (excluding windowing effects)
         an_scale = abs(max(self.an['voltage']) - min(self.an['voltage']))
-        self.dbvan = pd.Series(uarray(self.an['voltage'], .3 + .02 * an_scale))
+        self.voltage = pd.Series(uarray(self.an['voltage'], .3 + .02 * an_scale))
 
-        self.xan = self.freqan
-        self.yan = self.dbvan
+        self.xan = self.frequency
+        self.yan = self.voltage
 
         return self.an
 
@@ -164,6 +210,7 @@ class measurement:
         try:
             self.xanvalues = self.xan.apply(lambda x: x.n)
             self.yanvalues = self.yan.apply(lambda y: y.n)
+            self.yanvalues = 20 * np.log10(self.inputAmp * 10 ** (self.yanvalues / 20))
 
             self.xanerror = self.xan.apply(lambda x: x.s)
             self.yanerror = self.yan.apply(lambda y: y.s)

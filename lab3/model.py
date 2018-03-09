@@ -1,4 +1,5 @@
 import numpy as np
+
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.fftpack import fft
@@ -260,7 +261,7 @@ class lrc(fourierModel):
 
         return (1 / (np.sqrt(
         (1 - 4 * self.C * self.transformX()**2 * self.L * np.pi**2)**2 +
-        (2 * self.C * self.transformX() * np.pi * self.R)**2)))
+        (2 * self.C * self.transformX() * np.pi * self.R)**2))) * self.transformY()
 
     def phaseOut(self,
                     path='/home/johnny/kod/py/bin/venv/py3/phx444/labs/lab3/data/lrc_phase_df.csv',
@@ -296,14 +297,14 @@ class lrcSine(lrc):
     """
 
     def __init__(
-        self,
-        freq,
-        C=10 * 10**-9,
-        R=1000,
-        L=68 * 10**-3,
-        numPoints=6000,
-        sampleSpacing=1/80,
-        amplitude=2.5):
+            self,
+            freq,
+            C=10 * 10**-9,
+            R=1000,
+            L=68 * 10**-3,
+            numPoints=6000,
+            sampleSpacing=1/80,
+            amplitude=2.5):
 
         """
         :freq: frequency of the sine input
@@ -421,22 +422,26 @@ class lrcMultiFreqPhase(lrcMultiFreq):
 
         """
 
-        x = 1000 * self.xvals
-        y = 10 ** (self.yvals / 20)
-        p0 = np.array([1, self.L, self.C, self.R])
-        yerr = self.yerr
+        try:
+            x = 1000 * self.xvals
+            y = 10 ** (self.yvals / 20)
+            p0 = np.array([1, self.L, self.C, self.R])
+            yerr = self.yerr
 
-        popt, pcov = curve_fit(
-            self.lrcPhaseFunction,
-            x,
-            y,
-            sigma=yerr,
-            p0=p0)
+            popt, pcov = curve_fit(
+                self.lrcPhaseFunction,
+                x,
+                y,
+                sigma=yerr,
+                p0=p0)
 
-        xfit = x / 1000
-        yfit = 20 * np.log10(self.lrcPhaseFunction(x, *popt))
+            xfit = x / 1000
+            yfit = 20 * np.log10(self.lrcPhaseFunction(x, *popt))
 
-        plt.plot(xfit, yfit, '--', label='LRC Phase Model Fit to Data')
+            plt.plot(xfit, yfit, '--', label='LRC Phase Model Fit to Data')
+            
+        except Exception as e:
+            print("Can't fit data to phase", e)
 
         plt.plot(
             self.transformX() / 1000,

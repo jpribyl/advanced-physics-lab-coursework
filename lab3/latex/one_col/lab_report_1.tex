@@ -32,6 +32,8 @@
 \usepackage{enumerate}
 \usepackage{soul}
 \usepackage{csquotes}
+\usepackage{tcolorbox} 
+\usepackage{minted}
 
 %\setlength\parindent{0pt} % Removes all indentation from paragraphs
 
@@ -80,52 +82,407 @@ himself to fill this educational hole with experimental knowledge. That means
 this lab operates almost entirely in the frequency domain. Or, in other words,
 we Fourier Transform \textit{everything}.
 
-Although it's pretty tough to get funding these days, MSU still has neat toys
+Although it's pretty tough to get funding these days, MSU still has some toys
 leftover from the 90s. Among those is the SR770 Spectrum Analyzer. It boasts a
-peacefully green-hued digital output and the capacity to live stream the
-frequency domain of a time-dependent signal. However, it does not have the
-words  \textit{\textbf{DON'T PANIC}}  inscribed in large friendly letters on
-its cover.
+peaceful green-hued digital output and the capacity to live stream the
+frequency domain of a time-dependent signal. It only lacks the phrase
+\textit{\textbf{DON'T PANIC.}} Ideally, this would be inscribed in large
+friendly letters on its cover.
 
-In this lab, we examine the magnetic properties of several substances to figue
-out how many charges like to move around and what direction they tend to move.
+We used the SR770 and TBS1052B-EDU oscilloscope extensively in this lab. Both
+of them are capable of saving hundreds of data points at the press of a button.
+So, we had quite a bit more real data to analyze for this lab than we have had
+for any of our previous forays.
 
-Just like last time, you can find all of my code at:
+As before, you can find all of my code and data at:
 \begin{verbatim}
     jpribyl/cautious-palm-tree
 \end{verbatim}
 
+\subsection{Database Design}%
+
+The majority of this lab's data is relatively straightforward. Typically there
+are two columns - one for the dependent variable (say, voltage) and one for the
+independent variable (typically time or frequency). We saved this data into
+.csv files on a USB. However, all of the measurements carry a large amount of
+metadata regarding input frequency, amplitude, channel, and the source of the
+data. Unfortunately, all of the metadata is not recorded into the files. We
+wrote it all down in our lab notebooks, but that makes it difficult to cross
+reference.
+
+It would definitely be possible to store all the time / voltage data in excel
+and assign values to the metadata with python as we read it in. However, that
+approach does not scale very well. It's particularly ineffective for
+collaborative efforts. Ideally, there would be a way to tie all of the
+metadata to the files themselves. This ensures data integrity without
+requiring all collaborators to use an identical code base. It turns out, I'm
+not the first person in the world who has had this problem. The correct tool
+for the job is a ``database." 
+
+Databases are created and maintained with a language called SQL, or Structured
+Query Language. Every measurement is given a unique identifier that allows
+anyone to access or ``query" all of its metadata.
+
+Our data did not come pre-packaged with unique identifiers, so I had to add
+them manually. Bash has several incredibly powerful text-editing commands that
+are perfect for this kind of task. I'm not as familiar with Awk, so I opted to
+use Sed. If you have a bash shell on your computer you should be able to access
+the man pages with 
+
+\begin{verbatim}
+    man sed
+\end{verbatim}
+
+Otherwise, you can read them online at gnu.org/software/sed/manual/sed.txt. The
+first step was collecting all of our files into a single directory and naming
+them numerically so that I can sort through them with a for loop:
+
+\begin{figure}[thp]
+\centering
+\begin{minipage}{.8\textwidth}
+\begin{tcolorbox}
+\begin{minted}{bash}
+    #!/bin/bash
+    cur_id=1;
+
+    for i in $(ls * | sort -V);
+    do
+        echo $i
+        echo $cur_id
+
+        #double quotes allow variables
+        sed -i "s/\(.*\)/$cur_id,\1/" $i
+
+        let cur_id+s=1
+    done
+\end{minted}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+I find bash incredibly hard to read, so let's break this down a bit. The very
+first line is known as a ``shebang" and tells the computer to use bash for this
+script. Next I define a variable ``cur\_id" which holds the unique
+identifier that will get prepended to every line of the data files.
+
+After that I run through every file in the current directory and sort them
+``naturally." For each file, I read out (or echo) the file name and the file's
+identifier. Then, I tack the current id and a comma in front of every line in
+the file and increment the cur\_id by 1.
+
+Let's say that the first file in a given directory looks like this:
+\begin{figure}[thp]
+\centering
+\begin{minipage}{.8\textwidth}
+\begin{tcolorbox}
+\begin{minted}{python} 
+    0.0000000e+000, -1.3732910e-001,
+    6.2500000e+001,  9.4042969e+000,
+    ...
+    1.2500000e+002, -4.9438477e-002,
+    1.8750000e+002, -7.1411133e-002,
+    2.5000000e+002, -3.2958984e-002,
+    3.1250000e+002, -3.2958984e-002,
+\end{minted}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+My script will turn it into something that looks like this:
+\begin{figure}[thp]
+\centering
+\begin{minipage}{.8\textwidth}
+\begin{tcolorbox}
+\begin{minted}{python} 
+    1,  0.0000000e+000, -1.3732910e-001,
+    1,  6.2500000e+001,  9.4042969e+000,
+    ...
+    1,  1.2500000e+002, -4.9438477e-002,
+    1,  1.8750000e+002, -7.1411133e-002,
+    1,  2.5000000e+002, -3.2958984e-002,
+    1,  3.1250000e+002, -3.2958984e-002,
+\end{minted}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+Where 1 is the unique identifier for this measurement. The second file in the
+directory would look very similar except that it would be prepended with a 2
+instead of a 1. 
+
+After pre-processing the data, I read it into my database. If you want to play
+with the database at home, you can restore it using MySQL Workbench from the
+dump files in 
+
+\begin{verbatim}
+    lab3/data/database/databasedump
+\end{verbatim}
+
+If you don't feel like downloading my database, I really wouldn't blame you.
+It's not exactly anything groundbreaking. Besides, I took the 30 seconds
+required to generate an EER diagram mapping the relationships between tables.
+I'll let you peruse it at your leisure.
+
+\begin{figure}[H]
+\begin{minipage}{1.12\textwidth}
+\begin{tcolorbox}
+    \centering
+        % Center the figure.
+        % Include the eps file, scale it such that it's width equals the column width. You can also put width=8cm for example...
+        \includegraphics[width=12.5cm, height=6cm]{figures/figure1.png}
+        % Create a subtitle for the figure.
+        \caption{EER diagram mapping the database}
+        % Define the label of the figure. It's good to use 'fig:title', so you know that the label belongs to a figure.
+        \label{fig:fig1}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+The little yellow box entitled ``Info" corresponds to a view, or saved query
+that allows for easier access to the desired data without sacrificing the
+structure of an ACID database. If you were to run a simple query on the view:
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.4\textwidth}
+\begin{tcolorbox}
+\begin{minted}{sql}
+select * from info
+\end{minted}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+%\begin{verbatim}
+    %SELECT * FROM info
+%\end{verbatim}
+
+You would get something back that looks like:
+\begin{figure}[H]
+\begin{minipage}{1.12\textwidth}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=8.9cm, height=5.3cm]{figures/figure2.png}
+        \caption{A simple query on the database}
+        \label{fig:fig2}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+Hopefully all of that made sense. If not, don't worry about it -- it's not really
+too relevant to the actual data analysis.
 %----------------------------------------------------------------------------------------
 %   SECTION 2
 %----------------------------------------------------------------------------------------
 \section{Objectives}
 
-This lab has three main objectives. If you're not familiar with the methods and
-procedures of this lab, then I would suggest reviewing the manual. It lives in:
+All of these labs have objectives instead of procedures. They are intended to
+guide our experiments without spoon feeding us the results. Sometimes I really
+miss eating bananas out of a jar. Fortunately for me, most grocery stores still
+stock Gerber snacks. 
 
+If you're not familiar with the methods and procedures of this lab, then I
+would suggest reviewing the manual. It is quite extensive and details all the
+theory far more eloquently than I ever could. It lives in:
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.8\textwidth}
+\begin{tcolorbox}
+\begin{minted}{bash}
+lab3/lab_descrip/Fourier_Methods_manual.pdf
+\end{minted}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+\subsection{Introduction to Spectrum Analyzers}
+
+\subsubsection{Sine, Square, and Triangle Waves}%
+\label{ssub:sine_square_and_triangle_waves}
+
+The first thing we did in lab after putting our heads on straight was run a few
+single frequency waves through the oscilloscope and spectrum analyzer. The goal
+of this section was to get comfortable with the conversion between frequency
+and time domains. All of the oscilloscope data lives in the time domain.
+This means that time is the independent variable and our plots consider
+$Voltage(time)$. However, it is often useful and always didactic to convert
+this data into $V(\omega)$ by Fourier Transforming it:
+
+\begin{equation}
+    X(\omega) = \int_{-\infty}^{\infty} x(t) e^{-i \omega t} dt
+\end{equation}
+
+Technically, we have a discreet data set that isn't quite infinite, so it might
+be more accurate to say that we are using a Fourier Series -- but the theory is
+extremely similar and a full discourse on Fourier Analysis is outside of the
+scope of this report.
+
+If we use the function generator to produce a Sine wave of 11,097 Hz, we get a
+familiar looking graph of $V(t)$ on the scope:
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{10cm}
+\begin{tcolorbox}
+        \includegraphics[width=9cm, height=5.cm]{figures/figure3.png}
+        \caption{Sine wave of 11.097 kHz collected from the oscilloscope}
+        \label{fig:fig3}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+Now, everyone knows that the Fourier Transform of a sine wave is a delta
+function so let's transform the data that we collected from the scope and see
+how it looks:
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{10cm}
+\begin{tcolorbox}
+        \includegraphics[width=9cm, height=6.5cm]{figures/figure4.png}
+        \caption{FFT of data presented in Figure 3}
+        \label{fig:fig4}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+So far, it seems like all is well in the world, but let's overlay the results
+with the data collected from the SR770 and see whether things actually match
+up.
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+        \includegraphics[width=10cm, height=6.cm]{figures/figure5.png}
+        \caption{Analyzer data overlaid on top of Figure 4}
+        \label{fig:fig5}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+Things are looking pretty good -- however, those amplitudes don't quite seem to
+match. At a glance that might seem problematic. But, if you look closer at the
+label on my y-axis, you'll notice that the units are not the same! The data
+from the SR770 is in dBV while the data from the oscilloscope is in dB. In
+fact, if you convert everything to a linear scale, multiply by the amplitude of
+the input current, and convert back to a log scale -- the amplitudes just about
+match up:
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+        \includegraphics[width=10cm, height=6.cm]{figures/figure6.png}
+        \caption{Amplitude matching by converting dBV to dB}
+        \label{fig:fig6}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+The last thing to do before moving on is model the results. The plot is
+starting to get a little bit loud, but modeling a sine wave is quite easy. All
+we have to do is plug in the frequency, transform a vector of points, and
+overlay the final plot in the series
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+        \includegraphics[width=10cm, height=6cm]{figures/figure7.png}
+        \caption{Integrating a theoretical model to Figure 6}
+        \label{fig:fig7}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+The coding aspect of this lab was extensive enough that it seemed
+to warrant utilizing classes. So, I defined a class for measurements. The
+attributes for this class could be a useful reference, so here they are: 
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{1\textwidth}
+\begin{tcolorbox}
 \begin{verbatim}
-lab2/lab_descrip/Foundational_Magnetic_Susceptibility_Manual.pdf
+    :measurementId: Int - unique identifier 
+
+    :an: Pandas DF - holds all analyzer data
+
+    :xan: Pandas DF - uncertainties and values in x
+    :yan: Pandas DF - uncertainties and values in y
+
+    :xanvalues: Pandas DF - values for x component
+    :yanvalues: Pandas DF - values for y component
+
+    :xanerror: Pandas DF - uncertainties for x component
+    :yanerror: Pandas DF - uncertainties for y component
+
+    :sc: Pandas DF - holds all oscilloscope data
+
+    :xsc: Pandas DF - holds values for x component
+    :ysc: Pandas DF - holds values for y component
 \end{verbatim}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
 
-\subsection{B Field Calibration}
-Before we can start doing any kind of analysis on the data that we collected,
-we had to calibrate the magnetic field between the magnets. Neodymium magnets
-can be quite strong. We expected a result on the order of .5 Tesla. 
+I can't say that I'm especially proud of the class method for taking a Fourier
+Transform, but it does get the job done. 
 
-It is not possible (or at least not feasible) to measure the magnetic field
-directly. Instead we measured the mass of the magnet. Then, we placed a copper
-sheet between the magnet and ran a strong current through it. We measured the
-change in mass of the magnet and used this equation to calculate B:
-$$\vec{F} = \frac{A \chi_m (B_{b}^{2} - B_{t}^{2})}{2 \mu_0}$$
-We found that keeping the copper sheet over the top of the magnet has a
-negligible effect upon the mass of the system. It did not register at all on
-the Guoy Balance. So, we were able to conclude that $B_t$ is zero and solve for
-$B_b$:
+This method is available to any instances of the measurement class:
+\begin{figure}[H]
+\centering
+\begin{minipage}{1\textwidth}
+\begin{tcolorbox}
+\begin{minted}{python}
+    def fourierTransformVoltage(self):
+        """
+        :returns: nothing - however, will fourier transform, 
+        normalize, convert voltage to dB, and set all the 
+        necessary variables for plotting
+        """
 
-$$B_b = \frac{2 \mu_0 (m_1 - m_0) g}{A \chi_m}$$
-Where $m_1$ is the mass of the system with the current running through it and
-$m_0$ is the mass of the magnet by itself. Note that when there is no mass
-change, the magnetic field vanishes.
+        try:
+            #pick out values and time step
+            self.voltage = self.voltage.apply(lambda x: x.n)
+            self.time = self.time.apply(lambda x: x.n)
+
+            #perform the transformation on voltage
+            fftvolt = np.fft.fft(self.voltage)
+
+            #clean up and normalize
+            fftvolt = np.fft.fftshift(fftvolt)
+            fftvolt= 2*fftvolt/float(len(self.voltage))
+
+            #convert voltage to dB
+            self.fftdbv = 20.*np.log10(np.abs(fftvolt))
+
+            #determine the time step and window length
+            self.time_step = self.time[2]- self.time[1]
+            self.win_length = len(self.time)
+
+            #recover frequency bins
+            self.fftfreq = np.fft.fftfreq(
+                self.win_length, self.time_step)
+
+            self.fftfreq = np.fft.fftshift(self.fftfreq)
+
+            #convert to kHz
+            self.fftfreq = self.fftfreq/1000.
+
+            self.xsc = self.fftfreq
+            self.ysc = self.fftdbv
+
+        #all code to contine if fft fails
+        except Exception as e:
+            print('could not perform FT: ', e)
+\end{minted}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+
+
 
 The data that we collected is available in data/magnetic.xlsx 
 and my lab notebook, so I will not recopy it here. But, here is what it looks

@@ -1,14 +1,17 @@
 import model
+import numpy as np
 import matplotlib.pyplot as plt
-from measurement import measurement, query, plot_scope
+from measurement import measurement, query, plot_scope, plot_an
 
-data = measurement(1)
-mymodel = model.square(5097)
+data = measurement(15)
+mymodel = model.lrcSine(18)
 
-data.model('Square Wave', 'Voltage (dB and dBV)', 'Frequency (kHz)')
+data.model('Sine Wave Data With a Model', 'Voltage (dB)', 'Frequency (kHz)')
 mymodel.model()
 
 plt.legend()
-plt.ylim(-100,50)
+plt.ylim(-130,50)
+plt.xlim(0,40)
 plt.show()
 plt.clf()
+
