@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{from} \PYG{n+nn}{measurement} \PYG{k+kn}{import} \PYG{n}{query}
+\PYG{n}{query}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}SELECT * FROM info WHERE form\PYGZus{}name = \PYGZdq{}triangle\PYGZdq{}\PYGZsq{}}\PYG{p}{)}
+\end{Verbatim}

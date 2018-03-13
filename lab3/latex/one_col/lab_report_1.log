@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2018.2.8)  9 MAR 2018 00:56
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015/Debian) (preloaded format=xelatex 2018.2.8)  13 MAR 2018 16:01
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1029,7 +1029,23 @@ runsystem(which "pygmentize" && touch "lab_report_1.aex")...executed.
 
 runsystem(rm "lab_report_1.aex")...executed.
 
- (./lab_report_1.aux)
+ (./lab_report_1.aux
+
+LaTeX Warning: Label `fig:fig22' multiply defined.
+
+
+LaTeX Warning: Label `ssub:single_frequency_drive' multiply defined.
+
+
+LaTeX Warning: Label `ssub:noise_drive' multiply defined.
+
+
+LaTeX Warning: Label `ssub:chirp_drive' multiply defined.
+
+
+LaTeX Warning: Label `ssub:transient_response' multiply defined.
+
+)
 \openout1 = `lab_report_1.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 50.
@@ -1187,17 +1203,119 @@ Overfull \hbox (2.8524pt too wide) in paragraph at lines 357--358
 [6]
 File: figures/figure6.png Graphic file (type QTm)
  <use  "figures/figure6.png" >
-Overfull \hbox (2.8524pt too wide) in paragraph at lines 376--377
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 375--376
 [][] 
  []
 
+[7]
 File: figures/figure7.png Graphic file (type QTm)
-<use  "figures/figure7.png" >
+ <use  "figures/figure7.png" >
 Overfull \hbox (2.8524pt too wide) in paragraph at lines 391--392
 [][] 
  []
 
-[7] [8]
+File: figures/figure8.png Graphic file (type QTm)
+<use  "figures/figure8.png" >
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 405--406
+[][] 
+ []
+
+File: figures/figure9.png Graphic file (type QTm)
+<use  "figures/figure9.png" >
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 417--418
+ [][] 
+ []
+
+[8]
+File: figures/figure10.png Graphic file (type QTm)
+ <use  "figures/figure10.png" >
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 434--436
+ [][] 
+ []
+
+[9]
+File: figures/figure11.png Graphic file (type QTm)
+ <use  "figures/figure11.png" >
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 454--456
+ [][] 
+ []
+
+File: figures/figure12.png Graphic file (type QTm)
+<use  "figures/figure12.png" > [10]
+File: figures/figure13.png Graphic file (type QTm)
+ <use  "figures/figure13.png" >
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 486--488
+ [][] 
+ []
+
+File: figures/figure14.png Graphic file (type QTm)
+<use  "figures/figure14.png" >
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 502--504
+ [][] 
+ []
+
+File: figures/figure15.png Graphic file (type QTm)
+<use  "figures/figure15.png" >
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 517--519
+ [][] 
+ []
+
+[11] [12]
+File: figures/figure16.png Graphic file (type QTm)
+ <use  "figures/figure16.png" >
+File: figures/figure17.png Graphic file (type QTm)
+ <use  "figures/figure17.png" >
+[13]
+File: figures/figure18.png Graphic file (type QTm)
+ <use  "figures/figure18.png" >
+Overfull \hbox (2.84477pt too wide) in paragraph at lines 574--576
+ [][] 
+ []
+
+[14]
+File: figures/figure20.png Graphic file (type QTm)
+ <use  "figures/figure20.png" > [15]
+File: figures/figure21.png Graphic file (type QTm)
+ <use  "figures/figure21.png" >
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 670--671
+ [][] 
+ []
+
+File: figures/figure22.png Graphic file (type QTm)
+<use  "figures/figure22.png" >
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 697--699
+ [][] 
+ []
+
+[16]
+File: figures/figure23.png Graphic file (type QTm)
+ <use  "figures/figure23.png" >
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 715--716
+ [][] 
+ []
+
+[17]
+File: figures/figure24.png Graphic file (type QTm)
+ <use  "figures/figure24.png" >
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 738--739
+ [][] 
+ []
+
+File: figures/figure25.png Graphic file (type QTm)
+<use  "figures/figure25.png" > [18]
+File: figures/figure26.png Graphic file (type QTm)
+ <use  "figures/figure26.png" >
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 771--772
+ [][] 
+ []
+
+File: figures/figure27.png Graphic file (type QTm)
+<use  "figures/figure27.png" >
+Overfull \hbox (2.8524pt too wide) in paragraph at lines 790--791
+ [][] 
+ []
+
+[19]
 \openout6 = `lab_report_1.pyg'.
 
 \openout8 = `lab_report_1.mintedcmd'.
@@ -1210,62 +1328,124 @@ port_1.mintedmd5\", \"w\"); macro = \"\\edef\\minted@hash\" + chr(123) + hasher
 other\\endinput\n \"); f.close();")...executed.
 
  (./lab_report_1.mintedmd5)
-(./_minted-lab_report_1/d854e17ece30d3afde3d9b1b7eb654719ce2d499.pygtex)
-[9]
-File: /home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1.png Gra
-phic file (type QTm)
+(./_minted-lab_report_1/8b9783812a6e274eef07618ad97f0fb237ba209b.pygtex)
+[20]
+\openout6 = `lab_report_1.pyg'.
 
-<use  "/home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1.png" >
-[10]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 521.
+\openout8 = `lab_report_1.mintedcmd'.
 
- (/usr/share/texlive/texmf-dist/tex/latex/base/omlcmr.fd
-File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 521.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 521.
+runsystem(python -c "import hashlib; hasher = hashlib.sha1(); f = open(\"lab_re
+port_1.mintedcmd\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab
+_report_1.pyg\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab_re
+port_1.mintedmd5\", \"w\"); macro = \"\\edef\\minted@hash\" + chr(123) + hasher
+.hexdigest() + chr(125) + \"\"; f.write(\"\\makeatletter\" + macro + \"\\makeat
+other\\endinput\n \"); f.close();")...executed.
+
+ (./lab_report_1.mintedmd5)
+(./_minted-lab_report_1/892636d79dea870e188e3d2f2fc0f6b3fc60fbb6.pygtex)
+\openout6 = `lab_report_1.pyg'.
+
+\openout8 = `lab_report_1.mintedcmd'.
+
+runsystem(python -c "import hashlib; hasher = hashlib.sha1(); f = open(\"lab_re
+port_1.mintedcmd\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab
+_report_1.pyg\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab_re
+port_1.mintedmd5\", \"w\"); macro = \"\\edef\\minted@hash\" + chr(123) + hasher
+.hexdigest() + chr(125) + \"\"; f.write(\"\\makeatletter\" + macro + \"\\makeat
+other\\endinput\n \"); f.close();")...executed.
 
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 521.
- [11]
-File: /home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1b.png Gr
-aphic file (type QTm)
+(./lab_report_1.mintedmd5)
+(./_minted-lab_report_1/5a8d2fe79fae6065d09717c384ba0161c1163700.pygtex)
+[21]
+\openout6 = `lab_report_1.pyg'.
 
-<use  "/home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1b.png" 
-> [12] [13]
-File: /home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/tablefigure.png
- Graphic file (type QTm)
+\openout8 = `lab_report_1.mintedcmd'.
 
-<use  "/home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/tablefigure.pn
-g" > [14] [15]
-File: /home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure8.png Gra
-phic file (type QTm)
+runsystem(python -c "import hashlib; hasher = hashlib.sha1(); f = open(\"lab_re
+port_1.mintedcmd\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab
+_report_1.pyg\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab_re
+port_1.mintedmd5\", \"w\"); macro = \"\\edef\\minted@hash\" + chr(123) + hasher
+.hexdigest() + chr(125) + \"\"; f.write(\"\\makeatletter\" + macro + \"\\makeat
+other\\endinput\n \"); f.close();")...executed.
 
-<use  "/home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure8.png" >
-File: /home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/levitation.jpg 
-Graphic file (type QTm)
+ (./lab_report_1.mintedmd5)
+(./_minted-lab_report_1/d265e0237d65f4937ff55ff13840a51ab3f1cbba.pygtex)
+\openout6 = `lab_report_1.pyg'.
 
-<use  "/home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/levitation.jpg
-" > [16] [17]
+\openout8 = `lab_report_1.mintedcmd'.
+
+runsystem(python -c "import hashlib; hasher = hashlib.sha1(); f = open(\"lab_re
+port_1.mintedcmd\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab
+_report_1.pyg\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab_re
+port_1.mintedmd5\", \"w\"); macro = \"\\edef\\minted@hash\" + chr(123) + hasher
+.hexdigest() + chr(125) + \"\"; f.write(\"\\makeatletter\" + macro + \"\\makeat
+other\\endinput\n \"); f.close();")...executed.
+
+
+(./lab_report_1.mintedmd5)
+(./_minted-lab_report_1/00c4204d32dfc70321760b1e030b722b9ab63078.pygtex)
+\openout6 = `lab_report_1.pyg'.
+
+\openout8 = `lab_report_1.mintedcmd'.
+
+runsystem(python -c "import hashlib; hasher = hashlib.sha1(); f = open(\"lab_re
+port_1.mintedcmd\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab
+_report_1.pyg\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab_re
+port_1.mintedmd5\", \"w\"); macro = \"\\edef\\minted@hash\" + chr(123) + hasher
+.hexdigest() + chr(125) + \"\"; f.write(\"\\makeatletter\" + macro + \"\\makeat
+other\\endinput\n \"); f.close();")...executed.
+
+
+(./lab_report_1.mintedmd5)
+(./_minted-lab_report_1/faee8276fb12ea2f3c8a8045f38f14067e398dd6.pygtex)
+[22]
+\openout6 = `lab_report_1.pyg'.
+
+\openout8 = `lab_report_1.mintedcmd'.
+
+runsystem(python -c "import hashlib; hasher = hashlib.sha1(); f = open(\"lab_re
+port_1.mintedcmd\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab
+_report_1.pyg\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab_re
+port_1.mintedmd5\", \"w\"); macro = \"\\edef\\minted@hash\" + chr(123) + hasher
+.hexdigest() + chr(125) + \"\"; f.write(\"\\makeatletter\" + macro + \"\\makeat
+other\\endinput\n \"); f.close();")...executed.
+
+ (./lab_report_1.mintedmd5)
+(./_minted-lab_report_1/8d2e224bd841df4a70c30cccb97896fd5cfc5582.pygtex)
+\openout6 = `lab_report_1.pyg'.
+
+\openout8 = `lab_report_1.mintedcmd'.
+
+runsystem(python -c "import hashlib; hasher = hashlib.sha1(); f = open(\"lab_re
+port_1.mintedcmd\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab
+_report_1.pyg\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"lab_re
+port_1.mintedmd5\", \"w\"); macro = \"\\edef\\minted@hash\" + chr(123) + hasher
+.hexdigest() + chr(125) + \"\"; f.write(\"\\makeatletter\" + macro + \"\\makeat
+other\\endinput\n \"); f.close();")...executed.
+
+
+(./lab_report_1.mintedmd5)
+(./_minted-lab_report_1/9435434f4154f521d48dc920c2b4ee3b64cb6fbf.pygtex)
+[23]
 runsystem(rm "lab_report_1.mintedcmd")...executed.
 
 runsystem(rm "lab_report_1.mintedmd5")...executed.
 
 runsystem(rm "lab_report_1.pyg")...executed.
 
- [18] (./lab_report_1.aux) ) 
+ [24] (./lab_report_1.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 27464 strings out of 493638
- 565521 string characters out of 6146797
- 625837 words of memory out of 5000000
- 30467 multiletter control sequences out of 15000+600000
+ 27550 strings out of 493638
+ 567942 string characters out of 6146797
+ 619507 words of memory out of 5000000
+ 30511 multiletter control sequences out of 15000+600000
  13637 words of font info for 51 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
- 54i,11n,73p,10440b,1254s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 54i,11n,73p,10440b,771s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on lab_report_1.pdf (18 pages).
+Output written on lab_report_1.pdf (24 pages).

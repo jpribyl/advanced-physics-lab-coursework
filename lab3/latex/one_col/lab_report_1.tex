@@ -297,9 +297,6 @@ lab3/lab_descrip/Fourier_Methods_manual.pdf
 
 \subsection{Introduction to Spectrum Analyzers}
 
-\subsubsection{Sine, Square, and Triangle Waves}%
-\label{ssub:sine_square_and_triangle_waves}
-
 The first thing we did in lab after putting our heads on straight was run a few
 single frequency waves through the oscilloscope and spectrum analyzer. The goal
 of this section was to get comfortable with the conversion between frequency
@@ -316,6 +313,9 @@ Technically, we have a discreet data set that isn't quite infinite, so it might
 be more accurate to say that we are using a Fourier Series -- but the theory is
 extremely similar and a full discourse on Fourier Analysis is outside of the
 scope of this report.
+\subsubsection{Sine, Square, and Triangle Waves}%
+\label{ssub:sine_square_and_triangle_waves}
+
 
 If we use the function generator to produce a Sine wave of 11,097 Hz, we get a
 familiar looking graph of $V(t)$ on the scope:
@@ -346,7 +346,7 @@ how it looks:
 \end{minipage}
 \end{figure}
 
-So far, it seems like all is well in the world, but let's overlay the results
+As you can see, there is a single peak at 11.097 kHz. So far, it seems like all is well in the world, but let's overlay the results
 with the data collected from the SR770 and see whether things actually match
 up.
 
@@ -361,13 +361,12 @@ up.
 \end{minipage}
 \end{figure}
 
-Things are looking pretty good -- however, those amplitudes don't quite seem to
-match. At a glance that might seem problematic. But, if you look closer at the
-label on my y-axis, you'll notice that the units are not the same! The data
-from the SR770 is in dBV while the data from the oscilloscope is in dB. In
-fact, if you convert everything to a linear scale, multiply by the amplitude of
-the input current, and convert back to a log scale -- the amplitudes just about
-match up:
+Things are looking pretty good -- however, those amplitudes don't quite match.
+At a glance that might seem problematic. But, if you look closer at the label
+on my y-axis, you'll notice that the units are not the same! The data from the
+SR770 is in dBV while the data from the oscilloscope is in dB. In fact, if you
+convert everything to a linear scale, multiply by the amplitude of the input
+current, and convert back to a log scale -- the amplitudes just about match up:
 
 \begin{figure}[H]
     \centering
@@ -381,431 +380,683 @@ match up:
 \end{figure}
 
 The last thing to do before moving on is model the results. The plot is
-starting to get a little bit loud, but modeling a sine wave is quite easy. All
+starting to get a little bit busy, but modeling a sine wave is quite easy. All
 we have to do is plug in the frequency, transform a vector of points, and
-overlay the final plot in the series
+overlay the final plot in the series:
+
 \begin{figure}[H]
     \centering
 \begin{minipage}{11cm}
 \begin{tcolorbox}
         \includegraphics[width=10cm, height=6cm]{figures/figure7.png}
-        \caption{Integrating a theoretical model to Figure 6}
+        \caption{Adding a theoretical model to Figure 6}
         \label{fig:fig7}
 \end{tcolorbox}
 \end{minipage}
 \end{figure}
 
-The coding aspect of this lab was extensive enough that it seemed
-to warrant utilizing classes. So, I defined a class for measurements. The
-attributes for this class could be a useful reference, so here they are: 
+I'm not going to walk though the entire process for the square and triangle
+waves; however, here are the final plots that we produced:
 
 \begin{figure}[H]
-\centering
-\begin{minipage}{1\textwidth}
+    \centering
+\begin{minipage}{11cm}
 \begin{tcolorbox}
-\begin{verbatim}
-    :measurementId: Int - unique identifier 
-
-    :an: Pandas DF - holds all analyzer data
-
-    :xan: Pandas DF - uncertainties and values in x
-    :yan: Pandas DF - uncertainties and values in y
-
-    :xanvalues: Pandas DF - values for x component
-    :yanvalues: Pandas DF - values for y component
-
-    :xanerror: Pandas DF - uncertainties for x component
-    :yanerror: Pandas DF - uncertainties for y component
-
-    :sc: Pandas DF - holds all oscilloscope data
-
-    :xsc: Pandas DF - holds values for x component
-    :ysc: Pandas DF - holds values for y component
-\end{verbatim}
+        \includegraphics[width=10cm, height=6cm]{figures/figure8.png}
+        \caption{Square wave data (including a model)}
+        \label{fig:fig8}
 \end{tcolorbox}
 \end{minipage}
 \end{figure}
 
-I can't say that I'm especially proud of the class method for taking a Fourier
-Transform, but it does get the job done. 
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=10cm, height=6cm]{figures/figure9.png}
+        \caption{Triangle wave data (including a model)}
+        \label{fig:fig9}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
 
-This method is available to any instances of the measurement class:
+\subsubsection{Summer Module}%
+The process for the summer and multiplier modules was extremely similar. The
+only difference is that we fed the input signal from the signal generator
+through the ``Addition" module instead of running it directly into the scope.
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=10cm, height=6cm]{figures/figure10.png}
+        \caption{Summing two sine waves. Wave A has a frequency of 11.097 kHz
+        and peak-to-peak amplitude of 5V. Wave B is 1V at 11.097 kHz.}
+        \label{fig:fig10}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+We noticed that you cannot resolve two peaks when the frequencies are close
+together. For example, if we increase the frequency of the second wave to
+11.597 kHz, then you can't quite see the second peak on the SR770. You can
+actually resolve it by transforming the scope data, but this makes sense
+because the scope collects roughly 6 times as many data points as the analyzer
+does.
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=10cm, height=6cm]{figures/figure11.png}
+        \caption{Summing two sine waves - SR770 shows a single poorly
+        localized peak. Wave A is 5V at 11.097 kHz. Wave B is 1V at 11.597 kHz.}
+        \label{fig:fig11}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+Increasing the frequency of the second wave just a touch more, we are able to
+resolve two peaks on the SR770:
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=7cm, height=4.5cm]{figures/figure12.png}
+        \caption{Summing two sine waves - SR770 shows two peaks.
+        Wave A is 5V at 11.097 kHz. Wave B is 1V at 11.697 kHz.}
+        \label{fig:fig12}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+If we separate the frequency substantially, the second peak becomes even more
+obvious:
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=10cm, height=6cm]{figures/figure13.png}
+        \caption{Summing two sine waves - two well resolved peaks. Wave A is 5V
+        at 11.097 kHz. Wave B is 1V at 22.697 kHz.}
+        \label{fig:fig13}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+\subsubsection{Multiplier Module}%
+Moving on to the multiplier module, we see very similar results:
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=10cm, height=6cm]{figures/figure14.png}
+        \caption{Product of two sine waves - two peaks present. Wave A is 5V at
+        11.097 kHz. Wave B is 1V at 31.697 kHz.}
+        \label{fig:fig14}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+And setting both input waves to the same frequency:
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=10cm, height=6cm]{figures/figure15.png}
+        \caption{Product of two sine waves - single peak present. Wave A is 5V
+        at 25.097 kHz. Wave B is 1V at 25.097 kHz}
+        \label{fig:fig15}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+
+\pagebreak
+\subsubsection{Buried Treasure Module}%
+\label{sub:buried_treasure_module}
+
+The final introductory activity required us to use the "Buried Treasure"
+module. This module contains an assortment of noise along with a sine wave
+whose amplitude is large enough to dominate and appear on the spectrum
+analyzer. There are three different treasures -- treasure A, treasure B, and
+treasure C. We were successful in finding the sine waves for A and B. We opted
+to skip C because of time constraints. 
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=8cm, height=5cm]{figures/figure16.png}
+        \caption{Buried treasure 'A' hides a sine wave of approximately 70 kHz}
+        \label{fig:fig16}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=8cm, height=5cm]{figures/figure17.png}
+        \caption{Buried Treasure 'B' hides a sine wave of approximately 2.75 kHz}
+        \label{fig:fig17}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+\subsection{LRC Filter}%
+\label{sub:lrc_filter}
+
+After completing the introductory exercises, we proceeded to investigate the
+LRC circuit. Our goal was to characterize the circuit's response to a variety
+of conditions. The circuit's components were all in series to each other and we
+measured the $V_{out}$ as the voltage across the capacitor:
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=10cm, height=6cm]{figures/figure18.png}
+        \caption{LRC circuit diagram with components in series (Image courtesy
+        of augustana.edu)}
+        \label{fig:fig18}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+We are provided with (and verify) the values for R, L, and C in this circuit.
+This makes it easy to calculate the theoretical fundamental resonant frequency
+using
+
+\begin{equation}
+    \omega_0 = \frac{1}{\sqrt{LC}}
+\end{equation}
+
+Plugging in the values:
+
+\begin{equation*}
+    L = 68mH
+\end{equation*}
+
+\begin{equation*}
+    R = 1000 \Omega
+\end{equation*}
+
+\begin{equation*}
+    C = 10nF
+\end{equation*}
+
+We expect this circuit to have a natural frequency of 6103.313 Hz. In the
+coming sections, I will show that this is indeed the case. 
+
+The theoretical models in this section got interesting. In general, the
+transfer function of a circuit is a complex function that takes the form
+
+\begin{equation}
+    \tilde{H}(\omega) = \frac{\tilde{V}_{out}}{\tilde{V}_{in}}
+\end{equation}
+
+In class, we derived $\tilde{H}(\omega)$ for this particular circuit
+
+\begin{equation}
+    \tilde{H}_{LRC}(\omega) = \frac{1}{1 - \omega^2 L C + i \omega R C}
+\end{equation}
+
+This gives a magnitude of
+
+\begin{equation}
+    \|\tilde{H}_{LRC}(\omega)\| = \sqrt{\frac{1}{ \omega^2 R^2 C^2 + (1 -  \omega^ 2 L C)^2}}
+\end{equation}
+
+And a phase of 
+\begin{equation}
+    \phi = -\arctan{\frac{Im}{Re}} = -\arctan{\frac{\omega R C}{1 - \omega^2 L R}}
+\end{equation}
+
+Both of these equations will be invaluable in the following sections.
+
+\subsubsection{Single Frequency Drive}%
+\label{ssub:single_frequency_drive}
+
+As before, the first step in understanding and characterizing the circuit is to
+pass a single frequency through it and plot the results. For the remainder of
+the lab, I will not be plotting the oscilloscope data. At this point, it should
+be obvious that I understand the process of transforming data between the time
+and frequency domains. 
+
+When we pass a single frequency sine wave through the LRC, we find that there
+is a resonance at the input's frequency regardless of its value. For example,
+when we pass through a sine wave of 12 kHz, the output looks like this:
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=9cm, height=5.5cm]{figures/figure20.png}
+        \caption{LRC circuit response to a single frequency sine wave with a
+        frequency of 12 kHz}
+        \label{fig:fig20}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+The lab manual makes a point to note that this behavior is unique to single
+frequency sines. If we were to pass a single frequency square wave with a
+frequency of 12 kHz through the circuit, the output would not necessarily have
+a peak at 12 kHz. Just to be thorough, here is a plot of the circuit's response
+to an 18 kHz sine wave:
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=10cm, height=6cm]{figures/figure21.png}
+        \caption{LRC circuit response to a single frequency 18 kHz sine wave}
+        \label{fig:fig21}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+\subsubsection{Noise Drive}%
+\label{ssub:noise_drive}
+
+After driving the LRC with several single frequency inputs -- it was time to
+investigate the circuit's response to noise. Typical white noise consists of a
+Gaussian distribution of sine waves over a range of frequencies. We used the
+``noise" setting on the buried treasure module because its frequencies were low
+enough to avoid causing hardware issues.
+
+Unfortunately, we did not record the array of input voltages. This makes it
+impossible to recover the units for the data collected. We can't get the
+amplitude parameter from experimental data. So, when we plot the model, we find
+that the frequency of the peak lines up perfectly while the amplitudes do not
+match at all.
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=10cm, height=6cm]{figures/figure22.png}
+        \caption{LRC circuit's response to a noise drive without matching
+        amplitudes}
+        \label{fig:fig22}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+Fortunately, we can use the curve\_fit function in order to artificially
+recover the parameters. In other words, we can find the values for amplitude,
+capacitance, resistance, and inductance that best fit the theoretical model to
+the data. Once we do this, the plot gets much prettier.
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=10cm, height=6cm]{figures/figure23.png}
+        \caption{LRC circuit response to a noise drive}
+        \label{fig:fig22}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+During lecture, we predicted the peak of the response to be at a frequency
+slightly beneath the natural frequency. Experimentally, we can see that this is
+in fact the case!
+
+\subsubsection{Chirp Drive}%
+\label{ssub:chirp_drive}
+
+The results of driving the LRC with a chirp are extremely similar to those of
+driving it with noise -- except that it is possible to recover the complex
+phase information.
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=10cm, height=6cm]{figures/figure24.png}
+        \caption{LRC circuit response to chirp drive}
+        \label{fig:fig24}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+Unfortunately, all of the groups had some pretty serious issues collecting
+phase data. For us, it displayed correctly on the screen of the SR770, but then
+the data set came out awful! We collected the data twice and were still unable
+to get anything that looked correct. For the sake of completeness, here is the
+phase data that we collected:
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=6.5cm, height=4cm]{figures/figure25.png}
+        \caption{LRC phase data (corrupted)}
+        \label{fig:fig25}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+It is easy enough to model the correct phase results using equation (6) and
+NumPy's arctan2 method:
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=10cm, height=6cm]{figures/figure26.png}
+        \caption{LRC phase model (without data)}
+        \label{fig:fig26}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+\subsubsection{Transient Response}%
+\label{ssub:transient_response}
+
+The final activity with the LRC circuit involves passing a step function
+through the circuit. Plotting the results and model we see that the fundamental
+frequency aligns perfectly
+
+\begin{figure}[H]
+    \centering
+\begin{minipage}{11cm}
+\begin{tcolorbox}
+    \centering
+        \includegraphics[width=10cm, height=6cm]{figures/figure27.png}
+        \caption{LRC transient response data and model}
+        \label{fig:fig27}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+Unfortunately, the harmonics do not match. To me, it looks like there is either
+a unit issue, or our model is slightly too naive to catch them.
+
+\subsection{Acoustical Cavity}%
+\label{sub:acoustical_cavity}
+
+We did not really discuss the mathematical theory behind the acoustical cavity
+in lecture or lab. So, I will exclude it from here as well. The dedicated
+reader can easily google resources regarding the resonance of open and closed
+cylindrical cavities. Additionally, I will not include theoretical models for
+the data. The procedure for this section was almost identical to that of the
+preceding section, so I will present the results with a minimal amount of
+explanation. Refer to the lab manual or my notebook to rectify any confusion
+that occurs.
+
+%Additionally, it seems worth noting that it is possible to excite harmonics
+%above the fundamental frequency, but not below. This makes sense because any
+%frequency below (IE wavelength above) the fundamental will not physically have
+%enough space to resonate
+\subsubsection{Single Frequency Drive}%
+\label{ssub:single_frequency_drive}
+
+\subsubsection{Noise Drive}%
+\label{ssub:noise_drive}
+
+\subsubsection{Chirp Drive}%
+\label{ssub:chirp_drive}
+
+\subsubsection{Transient Response}%
+\label{ssub:transient_response}
+
+\subsection{Coupled Torsional Reed Oscillators}%
+\label{sub:coupled_torsional_reed_oscillators}
+
+
+\section{Questions}%
+\label{sec:questions}
+
+\subsection{SR770 Normalization}%
+\label{sub:sr770_normalization}
+
+\subsection{Time Domain Usefulness}%
+\label{sub:time_domain_usefulness}
+
+\section{Code Appendix}%
+\label{sec:code_appendix}
+
+The coding aspect of this lab was extensive enough that it seemed
+to warrant utilizing classes. So, I defined a class for measurements, and one
+for models. Within the model class, there are numerous sub classes. I took time
+to fully document the code, so it should be fairly straightforward. The goal of
+this section is to provide a 30,000 foot overview and point out a couple sneaky
+things. It does not aim to provide a full walk through of the code.
+
+
+\subsection{Measurement Class}%
+\label{sub:measurement_class}
+
+The measurement class has several important attributes. I carry uncertainty
+through all the analyzer data. Propagating error through a Fourier Transform is
+outside the scope of this lab, so I do not carry it through the oscilloscope
+data. After reviewing the data sheet, the analyzer is able to resolve data to
+$\pm($0.3 dB + 0.02\% of full scale) where the full scale excludes window
+effects and only takes into consideration the actual data points. In python,
+this looks like
+
 \begin{figure}[H]
 \centering
 \begin{minipage}{1\textwidth}
 \begin{tcolorbox}
 \begin{minted}{python}
-    def fourierTransformVoltage(self):
-        """
-        :returns: nothing - however, will fourier transform, 
-        normalize, convert voltage to dB, and set all the 
-        necessary variables for plotting
-        """
+# define the full scale of points
+an_scale = \
+    abs(max(self.an['voltage']) - min(self.an['voltage']))
 
-        try:
-            #pick out values and time step
-            self.voltage = self.voltage.apply(lambda x: x.n)
-            self.time = self.time.apply(lambda x: x.n)
-
-            #perform the transformation on voltage
-            fftvolt = np.fft.fft(self.voltage)
-
-            #clean up and normalize
-            fftvolt = np.fft.fftshift(fftvolt)
-            fftvolt= 2*fftvolt/float(len(self.voltage))
-
-            #convert voltage to dB
-            self.fftdbv = 20.*np.log10(np.abs(fftvolt))
-
-            #determine the time step and window length
-            self.time_step = self.time[2]- self.time[1]
-            self.win_length = len(self.time)
-
-            #recover frequency bins
-            self.fftfreq = np.fft.fftfreq(
-                self.win_length, self.time_step)
-
-            self.fftfreq = np.fft.fftshift(self.fftfreq)
-
-            #convert to kHz
-            self.fftfreq = self.fftfreq/1000.
-
-            self.xsc = self.fftfreq
-            self.ysc = self.fftdbv
-
-        #all code to contine if fft fails
-        except Exception as e:
-            print('could not perform FT: ', e)
+# apply the uncertainty as an array
+self.voltage = \
+    pd.Series(uarray(self.an['voltage'], .3 + .02 * an_scale))
 \end{minted}
 \end{tcolorbox}
 \end{minipage}
 \end{figure}
 
-
-
-
-The data that we collected is available in data/magnetic.xlsx 
-and my lab notebook, so I will not recopy it here. But, here is what it looks
-like:
+An instance of the measurement class has access to a method for taking the
+Fourier Transform. I'm not especially proud of the method, but it does get the
+job done. There are a couple sneaky things. NumPy's fft method does not
+automatically shift and normalize the data, so we have to do it explicitly
+Additionally, using the `np.log()' method will default to the natural log. We
+should use `np.log10()' instead. Lastly, we can use the `np.fftfreq()' method
+to recover the frequency bins:
 
 \begin{figure}[H]
-        % Center the figure.
-        \begin{center}
-        % Include the eps file, scale it such that it's width equals the column width. You can also put width=8cm for example...
-        \includegraphics[width=8cm, height=6cm]{/home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1.png}
-        % Create a subtitle for the figure.
-        \caption{Plotting the Measured values for Magnetic Field}
-        % Define the label of the figure. It's good to use `fig:title', so you know that the label belongs to a figure.
-        \label{fig:fig_1}
-        \end{center}
+\centering
+\begin{minipage}{1\textwidth}
+\begin{tcolorbox}
+\begin{minted}{python}
+# perform the transformation on voltage
+fftvolt = np.fft.fft(self.voltage)
+
+# clean up and normalize
+fftvolt = np.fft.fftshift(fftvolt)
+fftvolt = 2*fftvolt/float(len(self.voltage))
+
+# convert voltage to dB
+self.fftdbv = 20.*np.log10(np.abs(fftvolt))
+
+# determine the time step and window length
+self.time_step = self.time[2]- self.time[1]
+self.win_length = len(self.time)
+
+# recover frequency bins and shift them
+self.fftfreq = np.fft.fftfreq(
+    self.win_length, self.time_step)
+
+self.fftfreq = np.fft.fftshift(self.fftfreq)
+\end{minted}
+\end{tcolorbox}
+\end{minipage}
 \end{figure}
-I chose to read my data into python as a Pandas DataFrame. In my experience,
-pandas is just about the best library to work with heterogeneous data. It's
-even able to read an excel file:
-\begin{center}
-\begin{minipage}[t]{.75\textwidth}
-\begin{lstlisting}[frame=tlrb]
-xl = pd.ExcelFile(`data/magnetic.xlsx')
-df = xl.parse(`Sheet1')
-\end{lstlisting}
+
+Implementing and plotting the measurement class is very simple. For example,
+let's say you want to examine the 5th measurement we made. You could create a
+new .py file and fill it with:
+\begin{figure}[H]
+\centering
+\begin{minipage}{1\textwidth}
+\begin{tcolorbox}
+\begin{minted}{python}
+from measurement import *
+data = measurement(5)
+\end{minted}
+\end{tcolorbox}
 \end{minipage}
-\end{center}
-After that, I dropped the non-existent entries off the bottom of the DataFrame
-because they're problematic for model fitting. Then, I used the uncerainties
-package and a lambda function to propagate error through all of our mass and 
-current measurements. I'm not going to copy all of the code here, but the
-general syntax follows this form:
-\begin{center}
-\begin{minipage}[t]{.75\textwidth}
-\begin{lstlisting}[frame=tlrb]
-<Measurement>= \
-    df[<Measurement>].dropna().apply(
-        lambda x: ufloat(x, <error>)
-    )
-\end{lstlisting}
+\end{figure}
+
+Upon running this script, you will be greeted with a readout that provides all
+the metadata regarding the 5th measurement
+\begin{figure}[H]
+\centering
+\begin{minipage}{1\textwidth}
+\begin{tcolorbox}
+\begin{minted}{bash}
+id    filepath form_name  channel_num  frequency  amplitude
+ 5   511121518      sine            1    11097.0        5.0
+ ...
+ 5  scope-511121518 sine            2    11597.0        1.0
+\end{minted}
+\end{tcolorbox}
 \end{minipage}
-\end{center}
-Next, for the current menasurements, I looked up the specs for
-Keithley's model 2000 6 1/2 digit multimeter. I stared at them for a while.
-Then I pestered Brian for a while. Then I stared at the specs some more. Eventually, I
-pestered Brian enough that he showed how to read the table. In our case, the current 
-has an uncertainty of:
-$$(1000 \times I + 3 \times 15) \times 10^{-6}$$
-In python, we are able to make use of the pandas data structure and
-uncertainties library to propagate this:
-\begin{verbatim}
-current_error = \
-    1000 * df[`current'].dropna() * 10 ** -6 + 3 * 15 * 10**-6
+\end{figure}
 
-b_cal_current = \
-    pd.Series(uarray(df[`current'].dropna(), current_error))
-\end{verbatim}
-Notice that I have to explicitly turn the result back into a
-pandas object. The uarray() method returns a NumPy Array. It would be totally
-fine to leave the result as a NumPy object, but syntactically NumPy is slightly
-different and Pandas, so it's beneficial to have all objects be the same type.
+From here, you should have enough information to plot the data and give it
+an accurate title, label, etc. In this case the full script would be:
 
-I was able to fit the curve using the same method as in the data
-analysis lab. Specifically, I assumed linearity and fit it with:
+\begin{figure}[H]
+\centering
+\begin{minipage}{1\textwidth}
+\begin{tcolorbox}
+\begin{minted}{python}
+from measurement import *
+data = measurement(5)
 
-\begin{center}
-\begin{minipage}[t]{.75\textwidth}
-\begin{lstlisting}[frame=tlrb]
-def lin_fit(x, a, b):
-    return a*x + b
+data.model(
+    title='Summing Two Sine Waves', 
+    ylabel='Voltage (dB)', 
+    xlabel='Frequency (kHz)', 
+    plotSc=False)
 
-popt, pcov = curve_fit(
-                lin_fit, 
-                current_values, 
-                b_cal_values
-            )
+plt.legend()
+plt.show()
+\end{minted}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
 
-b_fit = lin_fit(
-    current_values, 
-    *popt
+I have caught all the errors and handled them in a way that prevent's the
+module from crashing. But, let's say you can't remember the ID of the
+measurement that you want to examine. You can use the `measurement.query()'
+method to perform any SQL query on the database. For example, let's say you
+know that the wave in which you are interested is driven by a triangle. You
+could do something like
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{1\textwidth}
+\begin{tcolorbox}
+\begin{minted}{python}
+from measurement import query
+query('SELECT * FROM info WHERE form_name = "triangle"')
+\end{minted}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+This would print a list of all the meta data for measurements with a triangle
+wave input function. From there, you could pick out the ID for which you are
+looking and model the data.
+
+\subsection{Model Class}%
+\label{sub:model_class}
+
+The model class has quite a few sub classes. All of it's sub classes have a
+model method which overrides the model method. The structure is fairly
+complicated, so here is a tree illustrating the relationships between sub
+classes:
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{1\textwidth}
+\begin{tcolorbox}
+\begin{minted}{bash}
+model
+    |-----fourierModel
+                |-----sine
+                |-----triangle
+                |-----square
+                |-----sineSum
+                |-----sineMult
+                |-----lrc
+                        |-----lrcSine
+                        |-----lrcSquare
+                        |-----lrcMultFreq
+                                    |-----lrcMultFreqGain
+                                    |-----lrcMultFreqPhase
+\end{minted}
+\end{tcolorbox}
+\end{minipage}
+\end{figure}
+
+Implementing the model class is also very simple. Let's return to the previous
+example we had. We were investigating the 5th measurement. By comparing the
+file-path to my lab notebook, we can deduce that measurement 5 corresponds to
+the addition module with one wave at 11.097 kHz and the other at 11.597 kHz.
+Once we know that, we can examine the model classes and deduce that sineSum is
+probably the correct one to use. Implementation is exactly what you would
+expect:
+\begin{figure}[H]
+\centering
+\begin{minipage}{1\textwidth}
+\begin{tcolorbox}
+\begin{minted}{python}
+import model
+
+mymodel = model.sineSum(
+    freqA=11.097, 
+    freqB=11.597, 
+
+    # using RMS amplitudes
+    ampA=(5 / (2 * np.sqrt(2)), 
+    ampB=(1 / (2 * np.sqrt(2))))
 )
-\end{lstlisting}
+
+mymodel.model()
+plt.legend()
+plt.show()
+\end{minted}
+\end{tcolorbox}
 \end{minipage}
-\end{center}
-
-We learned last lab that residuals are a pretty decent sanity check on the
-accuracy of data and models. So let's go ahead and plot the residuals from this
-fit:
-
-\begin{center}
-\begin{minipage}[t]{.75\textwidth}
-\begin{lstlisting}[frame=tlrb]
-r_i = b_cal_values - b_fit
-
-plt.errorbar(
-    current_values,
-    r_i,
-    yerr=b_cal_error,
-    fmt='o')
-\end{lstlisting}
-\end{minipage}
-\end{center}
-
-And showing this plot, we find that the residuals are actually quite
-reasonable. They are clustered around zero and their error bars are easily
-visible. Notice that the size of the error bars around zero is quite large.
-This makes sense because the current error ought to be similar in magnitude, but
-its fractional error will increase:
-
-\begin{figure}[H]
-        % Center the figure.
-        \begin{center}
-        % Include the eps file, scale it such that it's width equals the column width. You can also put width=8cm for example...
-        \includegraphics[width=8cm,
-        height=6cm]{/home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure1b.png}
-        % Create a subtitle for the figure.
-        \caption{Plotting the residuals as a sanity check}
-        % Define the label of the figure. It's good to use `fig:title', so you know that the label belongs to a figure.
-        \label{fig:fig_2}
-        \end{center}
 \end{figure}
 
+The form of implementation will be identical for any of the measurements.
+Auto completion suggestions are very helpful in knowing the order of the
+required parameters.
 
-\subsection{Magnetic Susceptibility of Samples}
-Now, hopefully I've convinced you that the environment between our magnets
-houses a magnetic field that is approximately .4 Teslas. If I haven't
-convinced you yet, try this:
-
-\begin{center}
-\begin{minipage}[t]{.75\textwidth}
-\begin{lstlisting}[frame=tlrb]
-def understand(paper, confused=True):
-    if confused:
-        read(section_1)
-        read(section_2)
-        understand(paper)
-
-    return 
-\end{lstlisting}
-\end{minipage}
-\end{center}
-
-Moving right along, We massed all our samples using the Guoy balance. Then, we
-did some math to determine how much of our sample was empty space and how much
-was really the substance in question. For example, if you have a vial full of pebbles, then
-a good bit of the vial is actually just air. The actual area is given by:
-$$A = (w\times l)(\% real)$$
-Where \% real is: 
-$$\frac{ m_{measured}}{ m_{theoretical}}$$
-And, for a substance of known density $\rho$, theoretical mass is:
-$$volume \times \rho$$
-Putting all of that together with the equation that we derived in lecture, we
-find the magnetic susceptibilty with:
-$$\chi_m = \frac{2 \times \mu_0 \times g (m_1 - m_0)}{A B^2}$$
-As before, $m_1$ refers to the mass of the magnet apparatus with the sample
-sitting in between the magnet and $m_0$ is the mass of the magnet without a
-sample in between it. 
-
-One peculiarity that I had not considered prior to doing my data analysis was
-the possibility of getting a value larger than 1 for \% real. This does not
-physically make sense (because our samples were not pressurized). For most of the
-samples, this was not an issue. 
-
-However, for the two wire samples, things got a little
-interesting. The wires were too small for us to measure very accurately which
-led us to accumulate immensely large errors.  After thinking on the issue for a
-while, eventually I decided to accept the measurements on these wires that are
-provided in the lab to be exact. I also decided to refuse negatve percentages
-and cap the maximum \% real at 1. 
-
-In python, we can impose reaonability on percentages with: 
-
-\begin{center}
-\begin{minipage}[t]{.75\textwidth}
-\begin{lstlisting}[frame=tlrb]
-percent_real = (real_mass / theory_mass)
-
-percent_real.apply(
-    lambda x: ufloat(min(abs(x.n), 1), x.s)
-)
-\end{lstlisting}
-\end{minipage}
-\end{center}
-
-Then, we can drop the error from cobalt:
-
-\begin{center}
-\begin{minipage}[t]{.75\textwidth}
-\begin{lstlisting}[frame=tlrb]
-area[4] = area[4].n
-percent_real[4] = percent_real[4].n
-\end{lstlisting}
-\end{minipage}
-\end{center}
-
-And now we're off to the races! Doing all the math things and putting them in a
-table thing that compares measurements and uncertainties to accepted $\chi_m$
-values, we see that most of our results are actually quite good:
-
-\begin{figure}[H]
-        % Center the figure.
-        \begin{center}
-        % Include the eps file, scale it such that it's width equals the column width. You can also put width=8cm for example...
-        \includegraphics[width=10cm, height=10cm]{/home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/tablefigure.png}
-        % Create a subtitle for the figure.
-        \caption{A table with our results}
-        % Define the label of the figure. It's good to use 'fig:title', so you know that the label belongs to a figure.
-        \label{fig:fig_4}
-        \end{center}
-\end{figure}
-
-However, there were a couple of surprises! I was shocked at the lack
-of literature data for comparison. Most of the data that I \textit{was} able to
-find was not available in SI units. The conversion from $\chi_{molar}$ in cgs
-to volume $\chi_m$ in SI must be done in 2 steps. First, you convert to volume
-$\chi_m$ in cgs and second, you multiply by the conversion factor of $4 \pi$.
-These units are very picky and I still don't fully understand why.
-
-Also, it seems as though something went a bit wrong when we prepared our own
-samples! While the majority of our data falls within 3 $\sigma$ of the
-literature values, we did not even get the correct sign for Water or Soda Lime
-Glass. Maybe we should have been a bit more suspicious of the bottle labeled
-``distilled water."
-
-
-
-%----------------------------------------------------------------------------------------
-%   SECTION 4
-%----------------------------------------------------------------------------------------
-\section{Questions}
-\subsection{Units Of $\chi_m$}
-
-There are a few common units for $\chi_m$ because there are a few different
-flavors of susceptibility. In class we discussed that Volume $\chi_m$ is
-actually unitless. This is true in both cgs and SI - however, there \textit{is
-    still a conversion factor between them}. I find that pretty strange, but I
-learned to stop questioning units when I started measuring the mass of the sun
-in kilometers.
-
-You might also encounter a molar $\chi_m$. In CGS this has units of
-$\frac{cm^3}{mol}$ but Brian told us that in SI, molar $\chi_m$ has units of
-$\frac{kg}{mol}$. That's pretty neat, but Wikipedia disagrees with Brian.
-Wikipedia says that molar $\chi_m$ has units of $\frac{m^3}{mol}$ in SI.
-
-The last type of $\chi_m$ that Brian mentioned is mass $\chi_m$. In SI this has
-units of $\frac{m^3}{kg}$ while in cgs it is $\frac{cm^3}{g}$.
-
-\subsection{Compare Results to Literature Values}
-It's tough to compare our results to literature values, because quite a few of
-the literature values don't exist. And, when they do exist they're in the wrong
-units. So, in order to do any comparison I had to start by collecting as many
-literature values for $\chi_m$ as I could find. I converted the cgs values of
-$\chi_{mol}$ into volume $\chi_m$ in SI like this:
-$$\chi_{sivol} = 4 \pi\frac{\chi_{cgsmol}}{M_{cgs} / \rho_{cgs}} $$
-Where M is the molar mass. If we plot this with the literature values along the
-x axis and measure values along the y axis, we would expect the line y = x to
-intersect most of them. I went one step further and ran a linear fit on our
-data points using the same curve\_fit method that I describe in section 2.1.
-Plotting the results, we see that, overall, our data agrees with the
-literature:
-
-
-\begin{figure}[H]
-        % Center the figure.
-        \begin{center}
-        % Include the eps file, scale it such that it's width equals the column width. You can also put width=8cm for example...
-        \includegraphics[width=8cm, height=6cm]{/home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/figure8.png}
-        % Create a subtitle for the figure.
-        \caption{Plotting accepted values for $\chi_m$ against our measurements}
-        % Define the label of the figure. It's good to use 'fig:title', so you know that the label belongs to a figure.
-        \label{fig:fig_5}
-        \end{center}
-\end{figure}
-
-\subsection{Levitation!!}
-Brian gave this one away. I'm going to go out on a limb here and say that
-pyrolitic graphite might work, just maybe. Here's what it looks like:
-
-
-\begin{figure}[H]
-        % Center the figure.
-        \begin{center}
-        % Include the eps file, scale it such that it's width equals the column width. You can also put width=8cm for example...
-        \includegraphics[width=8cm, height=6cm]{/home/johnny/kod/py/bin/venv/py3/phx444/labs/lab2/figures/levitation.jpg}
-        % Create a subtitle for the figure.
-        \caption{Photo credits to the kind folks over at: http://sci-toys.com}
-        % Define the label of the figure. It's good to use 'fig:title', so you know that the label belongs to a figure.
-        \label{fig:fig_6}
-        \end{center}
-\end{figure}
-
-Sci-toys has a really great explanation of the phenomenon. It's worth reading
-if you like science. Here's an excerpt that will (hopefully) get you excited
-enough to open up a browser:
-\begin{quotation}
-
- ``We can do that by using four magnets. The poles of the magnets push on the
- diamagnetic material more strongly than other parts of the magnet. With four
- magnets, the four edges of the square of pyrolytic graphite will be pushed
- away from the four poles."
-
- - sci-toys.com
-
-\end{quotation}
-
-\section{Conclusion and Sources of Error}
-
-I must say, I'm pretty impressed with our results. I fully expected them to
-wildly disagree with the accepted values of $\chi_m$. During the experiment, we
-noticed that the instruments were incredibly sensitive. Things like leaning on
-the table, or rotating the balance made noticeable impacts upon results. We
-also noticed that the scale's calibration had a tendency to walk. And, paralax
-made it quite difficult to ensure that the bottom of our samples was precisely
-in the middle of the magnetic field. 
-
-The only significant source of error seemed to occur during the preparation of
-our own samples. It's possible that the vials were not adequately cleaned. It's
-even possible that the samples we prepared were not quite exactly what we
-thought they were. Lastly, it's possible that the literature values for
-$\chi_m$ are wrong.
-
-If I were to do this experiment again, I would be more careful to monitor the
-walking of the scale's calibration and more careful while preparing my own
-samples.
 
 \end{document}

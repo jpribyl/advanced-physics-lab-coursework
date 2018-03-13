@@ -1,9 +1,8 @@
-import numpy as np
-
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
-from scipy.fftpack import fft
 from scipy import signal
+from scipy.fftpack import fft
 from scipy.optimize import curve_fit
 
 
@@ -178,7 +177,7 @@ class square(fourierModel):
         )
 
         # here, we override the relationship between time and frequency
-        self.voltageFunction = amplitude * signal.square(2 * np.pi * 5 * self.time)
+        self.voltageFunction = amplitude * signal.square(2 * np.pi * freq * self.time)
 
 class sineSum(fourierModel):
 
@@ -211,7 +210,12 @@ class sineMult(fourierModel):
     """
 
     def __init__(self, freqA, freqB, ampA, ampB, numPoints=6000, sampleSpacing=1/800):
-        """TODO: to be defined1. """
+        """
+        :freqA: frequency of first sine
+        :freqB: frequency of second sine
+        :ampA: amplitude of first sine
+        :ampB: amplitude of second sine
+        """
         fourierModel.__init__(
             self,
             numPoints=numPoints,
@@ -226,7 +230,9 @@ class sineMult(fourierModel):
 
 class lrc(fourierModel):
 
-    """The LRC circuit is a model"""
+    """
+    The LRC circuit is a fourier model
+    """
 
     def __init__(self,
                  C=10 * 10**-9,
@@ -256,7 +262,7 @@ class lrc(fourierModel):
     def voltageOut(self):
         """
         :returns: Voltage out in frequency domain calculated by the transfer
-        function multiplied by voltage in
+        function multiplied by voltage in (IE self.transformY())
         """
 
         return (1 / (np.sqrt(
@@ -279,8 +285,16 @@ class lrc(fourierModel):
         (1 - 4 * self.C * self.transformX()**2 * self.L * np.pi**2))
 
     def model(self, style='--'):
-        """TODO: Docstring for model.
-        :returns: TODO
+        """
+        :returns: Nothing, but will plot the FT of the model
+
+        plt.plot(
+                    self.transformX(),
+                    self.voltageOut(),
+                    style,
+                    label=self.name
+                )
+
 
         """
         plt.plot(
@@ -328,25 +342,35 @@ class lrcSquare(lrc):
     """
 
     def __init__(
-        self,
-        freq,
-        numPoints=6000,
-        sampleSpacing=1/800,
-        amplitude=2.5):
+                    self,
+                    freq,
+                    numPoints=6000,
+                    sampleSpacing=1/800,
+                    amplitude=2.5):
         """
         :freq: frequency of the square input
         """
         lrc.__init__(
             self,
-            C=C,
-            R=R,
-            L=L,
             numPoints=numPoints,
             sampleSpacing=sampleSpacing,
             name='LRC Square Wave Model')
 
-        self.voltageFunction = amplitude * np.sin(freq * 2*np.pi*self.time)
+        # convert to Hz
+        freq = freq * 1000
 
+        # generate the wave
+        self.voltageFunction = amplitude * signal.square(2 * np.pi * freq * self.time)
+
+    def model(self, style='--', alpha=1):
+        plt.plot(
+
+            # convert back to kHz
+            self.transformX() / 1000,
+
+            self.voltageOut(),
+
+            style, label='LRC Square Wave Model', alpha=alpha)
 
 class lrcMultiFreq(lrc):
 
@@ -378,7 +402,10 @@ class lrcMultiFreq(lrc):
 
 class lrcMultiFreqPhase(lrcMultiFreq):
 
-    """Docstring for lrcMultiFreqGain. """
+    """
+    An instance of this class will model the phase response of a
+    multi-frequency input into the LRC circuit
+    """
 
     def __init__(
         self,
@@ -389,7 +416,12 @@ class lrcMultiFreqPhase(lrcMultiFreq):
         yerr=None,
         amplitude=2.5):
 
-        """TODO: to be defined1. """
+        """
+        :xvals: the measurement values (measurement.xanvalues)
+        :yvals: the measurement values (measurement.yanvalues)
+        :yerr: the measurement error (measurement.yanerror)
+        
+        """
         lrcMultiFreq.__init__(
             self,
             numPoints,
@@ -401,14 +433,12 @@ class lrcMultiFreqPhase(lrcMultiFreq):
 
 
     def lrcPhaseFunction(self, x, amp, L, R, C):
-        """TODO: Docstring for lrcPhaseFunction.
-
-        :x: TODO
-        :L: TODO
-        :R: TODO
-        :C: TODO
-        :returns: TODO
-
+        """
+        :x: frequency values (x-axis)
+        :L: inductance
+        :R: resistance
+        :C: capacitance
+        :returns: a dataframe with the y-values for LRC phase
         """
 
         return - np.arctan2(
@@ -418,10 +448,11 @@ class lrcMultiFreqPhase(lrcMultiFreq):
 
     def model(self, style='--'):
         """Model
-        :returns: TODO
+        :returns: Nothing, but plots the phase information
 
         """
 
+        # try to fit the data provided
         try:
             x = 1000 * self.xvals
             y = 10 ** (self.yvals / 20)
@@ -438,11 +469,12 @@ class lrcMultiFreqPhase(lrcMultiFreq):
             xfit = x / 1000
             yfit = 20 * np.log10(self.lrcPhaseFunction(x, *popt))
 
-            plt.plot(xfit, yfit, '--', label='LRC Phase Model Fit to Data')
-            
+            plt.plot(xfit, yfit, style, label='LRC Phase Model Fit to Data')
+
         except Exception as e:
             print("Can't fit data to phase", e)
 
+        # plot the theoretical model without fitting the parameters
         plt.plot(
             self.transformX() / 1000,
             self.lrcPhaseFunction(
@@ -451,7 +483,7 @@ class lrcMultiFreqPhase(lrcMultiFreq):
                 L=self.L,
                 R=self.R,
                 C=self.C),
-            '--', label='LRC Phase Model')
+            style, label='LRC Phase Model')
 
 
 
@@ -522,4 +554,4 @@ class lrcMultiFreqGain(lrcMultiFreq):
         xfit = x / 1000
         yfit = 20 * np.log10(self.lrcGainFunction(x, *popt))
 
-        plt.plot(xfit, yfit, '--', label='LRC Gain Function Model')
+        plt.plot(xfit, yfit, style, label='LRC Gain Function Model')
