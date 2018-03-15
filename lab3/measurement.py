@@ -77,9 +77,8 @@ class measurement:
         :xsc: Pandas DF - holds values for x component
         :ysc: Pandas DF - holds values for y component
     '''
-    def __init__(self, measurementId, inputAmp=1):
+    def __init__(self, measurementId):
         self.measurementId = measurementId
-        self.inputAmp = inputAmp
 
         print(pd.read_sql('select \
                           id, \
@@ -210,7 +209,6 @@ class measurement:
         try:
             self.xanvalues = self.xan.apply(lambda x: x.n)
             self.yanvalues = self.yan.apply(lambda y: y.n)
-            self.yanvalues = 20 * np.log10(self.inputAmp * 10 ** (self.yanvalues / 20))
 
             self.xanerror = self.xan.apply(lambda x: x.s)
             self.yanerror = self.yan.apply(lambda y: y.s)
