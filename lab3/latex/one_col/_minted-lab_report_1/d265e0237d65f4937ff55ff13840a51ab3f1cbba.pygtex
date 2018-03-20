@@ -1,6 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-id    filepath form\PYGZus{}name  channel\PYGZus{}num  frequency  amplitude
- \PYG{l+m}{5}   \PYG{l+m}{511121518}      sine            \PYG{l+m}{1}    \PYG{l+m}{11097}.0        \PYG{l+m}{5}.0
- ...
- \PYG{l+m}{5}  scope\PYGZhy{}511121518 sine            \PYG{l+m}{2}    \PYG{l+m}{11597}.0        \PYG{l+m}{1}.0
-\end{Verbatim}

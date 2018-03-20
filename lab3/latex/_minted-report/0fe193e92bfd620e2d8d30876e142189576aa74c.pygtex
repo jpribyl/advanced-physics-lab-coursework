@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{from} \PYG{n+nn}{measurement} \PYG{k+kn}{import} \PYG{o}{*}
+\PYG{n}{data} \PYG{o}{=} \PYG{n}{measurement}\PYG{p}{(}\PYG{l+m+mi}{5}\PYG{p}{)}
+
+\PYG{n}{data}\PYG{o}{.}\PYG{n}{model}\PYG{p}{(}
+    \PYG{n}{title}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}Summing Two Sine Waves\PYGZsq{}}\PYG{p}{,}
+    \PYG{n}{ylabel}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}Voltage (dB)\PYGZsq{}}\PYG{p}{,}
+    \PYG{n}{xlabel}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}Frequency (kHz)\PYGZsq{}}\PYG{p}{,}
+    \PYG{n}{plotSc}\PYG{o}{=}\PYG{n+nb+bp}{False}\PYG{p}{)}
+
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{legend}\PYG{p}{()}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+\end{Verbatim}

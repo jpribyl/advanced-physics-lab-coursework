@@ -1,0 +1,16 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{model}
+
+\PYG{n}{mymodel} \PYG{o}{=} \PYG{n}{model}\PYG{o}{.}\PYG{n}{sineSum}\PYG{p}{(}
+    \PYG{n}{freqA}\PYG{o}{=}\PYG{l+m+mf}{11.097}\PYG{p}{,}
+    \PYG{n}{freqB}\PYG{o}{=}\PYG{l+m+mf}{11.597}\PYG{p}{,}
+
+    \PYG{c+c1}{\PYGZsh{} using RMS amplitudes}
+    \PYG{n}{ampA}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{5} \PYG{o}{/} \PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sqrt}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{)),}
+    \PYG{n}{ampB}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{/} \PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sqrt}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{))))}
+\PYG{p}{)}
+
+\PYG{n}{mymodel}\PYG{o}{.}\PYG{n}{model}\PYG{p}{()}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{legend}\PYG{p}{()}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+\end{Verbatim}

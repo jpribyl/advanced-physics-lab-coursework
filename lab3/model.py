@@ -375,7 +375,7 @@ class lrcSquare(lrc):
 class lrcMultiFreq(lrc):
 
     """
-    LRC model for a transient step function type response
+    LRC model for multiple frequenquency noise / chirp inputs
     """
 
     def __init__(
@@ -489,18 +489,31 @@ class lrcMultiFreqPhase(lrcMultiFreq):
 
 class lrcMultiFreqGain(lrcMultiFreq):
 
-    """Docstring for lrcMultiFreqGain. """
+    """
+    Class that will model the magnitude of the gain for chirps / noise through
+    the LRC circuit. 
+
+    :xvals: The corresponding xanvalues from an instance of the measurement
+    class. This data (Pandas DataFrame) will be used to fit parameters to the
+    gain function
+
+    :yvals: corresponding measured yanvalues
+
+    :yerr: corresponding measured yanerror
+    """
 
     def __init__(
         self,
+        xvals,
+        yvals,
+        yerr,
         numPoints=6000,
         sampleSpacing=1/30000,
-        xvals=None,
-        yvals=None,
-        yerr=None,
         amplitude=2.5):
 
-        """TODO: to be defined1. """
+        """
+        Call the superclass initializaion
+        """
         lrcMultiFreq.__init__(
             self,
             numPoints,
@@ -523,9 +536,7 @@ class lrcMultiFreqGain(lrcMultiFreq):
         :R: resistance of LRC
         :C: capacitance of LRC
 
-        :returns: amp / (np.sqrt(
-                    (1 - 4 * C * x**2 * L * np.pi**2)**2 +
-                    (2 * C * x * np.pi * R)**2))
+        :returns: a pandas DF or number depending upon data type of the input
         """
 
         return amp / (np.sqrt(
@@ -534,8 +545,12 @@ class lrcMultiFreqGain(lrcMultiFreq):
 
 
     def model(self, style='--'):
-        """Model
-        :returns: TODO
+        """Model method override
+
+        :style: the line style for this plot
+
+        :returns: Nothing, but adds the magnitude of the gain to the current
+        plot
 
         """
 

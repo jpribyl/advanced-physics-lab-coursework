@@ -1,0 +1,15 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+model
+    \PYG{p}{|}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}fourierModel
+                \PYG{p}{|}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}sine
+                \PYG{p}{|}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}triangle
+                \PYG{p}{|}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}square
+                \PYG{p}{|}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}sineSum
+                \PYG{p}{|}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}sineMult
+                \PYG{p}{|}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}lrc
+                        \PYG{p}{|}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}lrcSine
+                        \PYG{p}{|}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}lrcSquare
+                        \PYG{p}{|}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}lrcMultFreq
+                                    \PYG{p}{|}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}lrcMultFreqGain
+                                    \PYG{p}{|}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}lrcMultFreqPhase
+\end{Verbatim}

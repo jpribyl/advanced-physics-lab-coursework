@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} define the full scale of points}
+\PYG{n}{an\PYGZus{}scale} \PYG{o}{=} \PYGZbs{}
+    \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n+nb}{max}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{an}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}voltage\PYGZsq{}}\PYG{p}{])} \PYG{o}{\PYGZhy{}} \PYG{n+nb}{min}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{an}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}voltage\PYGZsq{}}\PYG{p}{]))}
+
+\PYG{c+c1}{\PYGZsh{} apply the uncertainty as an array}
+\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{voltage} \PYG{o}{=} \PYGZbs{}
+    \PYG{n}{pd}\PYG{o}{.}\PYG{n}{Series}\PYG{p}{(}\PYG{n}{uarray}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{an}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}voltage\PYGZsq{}}\PYG{p}{],} \PYG{o}{.}\PYG{l+m+mi}{3} \PYG{o}{+} \PYG{o}{.}\PYG{l+m+mo}{02} \PYG{o}{*} \PYG{n}{an\PYGZus{}scale}\PYG{p}{))}
+\end{Verbatim}
