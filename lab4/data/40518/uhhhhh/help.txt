@@ -1,0 +1,4 @@
+ffmpeg -vcodec rawvideo -f rawvideo -pix_fmt gray16le -s 80x80 -i data output%07d.png
+
+#note, Jen3andRyan was taken with a window size of 148x80. All others taken with 80x80.
+
