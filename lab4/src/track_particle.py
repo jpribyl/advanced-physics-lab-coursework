@@ -1,4 +1,4 @@
-from __future__ import division, unicode_literals, print_function  # for compatibility with Python 2 and 3
+from __future__ import division, unicode_literals, print_function  # for compatibility with Python 2 and 4
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -15,9 +15,9 @@ import pims
 import trackpy as tp
 
 
-frames = pims.ImageSequence('data/*.png', as_grey=True)
+frames = pims.ImageSequence('*.png', as_grey=True)
 
-f = tp.locate(frames[0], diameter=9, minmass=0.0001, invert=True, topn=1)
+f = tp.locate(frames[0], diameter=13, minmass=0.0001, invert=True, topn=1)
 f.head()
 
 plt.figure()  # make a new figure
@@ -25,7 +25,7 @@ tp.annotate(f, frames[0])
 plt.show()
 
 # locate in all frames
-f = tp.batch(frames[:], diameter=9, minmass=0.0001, invert=True, topn=1)
+f = tp.batch(frames[:], diameter=13, minmass=0.0001, invert=True, topn=1)
 
 # create trajectory
 t = tp.link_df(f, 200, memory=3)
