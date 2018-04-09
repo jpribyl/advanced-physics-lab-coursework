@@ -1,0 +1,2 @@
+As pressure decreases, the distribution should start to look more like an
+oscillator and less like Brownian motion.
