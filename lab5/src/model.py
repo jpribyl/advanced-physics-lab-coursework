@@ -86,7 +86,13 @@ class fourierModel(model):
         """
 
         return 2.0/self.N * np.abs(fft(self.y)[0:self.N//2])
-
+    
+    def complexTransformY(self):
+        return 2.0 / self.N * fft(self.y)
+    
+    def complexTransformX(self):
+        return  np.concatenate((np.linspace(-1.0 / (2.0 * self.T), 0, self.N//2), 
+            np.linspace(0.0, 1.0 / (2.0 * self.T), self.N//2)))
 
     def model(self, style='--'):
         """Transform and plot both X and Y domains
