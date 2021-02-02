@@ -2,7 +2,7 @@ absl-py==0.1.13
 astor==0.6.2
 awscli==1.11.13
 beautifulsoup4==4.4.1
-bleach==1.5.0
+bleach==3.3.0
 botocore==1.4.70
 Brlapi==0.6.4
 chardet==2.3.0
